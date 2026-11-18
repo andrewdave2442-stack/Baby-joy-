@@ -1,1 +1,68 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BabyJoy - Little Fun World</title>
+  <style>
+    body {
+      margin: 0;
+      text-align: center;
+      font-family: Arial;
+      background: #fff0f7;
+      color: #663399;
+    }
+    header {
+      background: #ff83b8;
+      color: white;
+      padding: 25px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .card {
+      background: white;
+      margin: 15px;
+      padding: 25px;
+      border-radius: 20px;
+      font-size: 24px;
+    }
+    button {
+      background: #8b72ee;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <header>🌈 BabyJoy 🌈<br>
+  <small>Little Fun World</small></header>
+
+  <div class="card">
+    🐻 Welcome, Little Star!
+    <p>Let's play and learn!</p>
+  </div>
+
+  <div class="card">
+    🐶 Animal Fun
+    <p>🐱 🐮 🐸 🐵</p>
+    <button onclick="alert('Hello little star!')">
+      Play
+    </button>
+  </div>
+
+  <div class="card">
+    🫧 Bubble Fun
+    <p>Pop and play!</p>
+    <button onclick="alert('Pop! Pop! Pop!')">
+      Start
+    </button>
+  </div>
+
+  <div class="card">
+    ⭐ Have fun with BabyJoy! ⭐
+  </div>
+</body>
+</html>
