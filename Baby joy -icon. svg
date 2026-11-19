@@ -1,0 +1,14 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="110" fill="#ff83b8"/>
+  <circle cx="256" cy="235" r="150" fill="#fff0f7"/>
+  <text x="256" y="285"
+        text-anchor="middle"
+        font-size="170">🌈</text>
+  <text x="256" y="440"
+        text-anchor="middle"
+        font-size="55"
+        font-weight="bold"
+        fill="#663399">BabyJoy</text>
+</svg>
