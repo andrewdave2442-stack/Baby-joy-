@@ -76,23 +76,39 @@ button:active { transform: scale(.94); }
 }
 
 #balloonArea {
-  min-height: 180px;
-  background: #fff0fa;
-  border-radius: 15px;
-  padding: 12px;
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  background: linear-gradient(#dff5ff, #fff0fa);
+  border-radius: 18px;
+  margin-top: 12px;
+  border: 2px solid #f5c8e0;
 }
 
-.balloon {
-  display: inline-block;
-  font-size: 43px;
-  padding: 5px;
-  margin: 4px;
+.flyingBalloon {
+  position: absolute;
+  bottom: -65px;
+  padding: 0;
+  margin: 0;
   background: transparent;
-  animation: bounce 1s infinite alternate;
+  border: none;
+  font-size: 45px;
+  line-height: 1;
+  animation: balloonFly 3.5s linear forwards;
+  z-index: 2;
 }
 
-@keyframes bounce {
-  to { transform: translateY(-7px); }
+.flyingBalloon.bonus {
+  font-size: 48px;
+  filter: drop-shadow(0 0 7px gold);
+}
+
+@keyframes balloonFly {
+  0% { transform: translateY(0) rotate(-8deg); }
+  25% { transform: translate(15px, -90px) rotate(8deg); }
+  50% { transform: translate(-12px, -180px) rotate(-8deg); }
+  75% { transform: translate(12px, -270px) rotate(8deg); }
+  100% { transform: translate(-8px, -390px) rotate(-5deg); }
 }
 
 .gameMessage {
@@ -100,6 +116,11 @@ button:active { transform: scale(.94); }
   font-weight: bold;
   color: #a34b9b;
   min-height: 28px;
+}
+
+#sleepMessage {
+  color: #8866aa;
+  font-weight: bold;
 }
 
 footer {
@@ -114,7 +135,7 @@ footer {
 <body>
 
 <header>
-  <h1>🌹 BabyJoy 🌺</h1>
+  <h1>🌈 BabyJoy 🌈</h1>
   <h2 style="color:white;">Little Fun World</h2>
   <p>Play, learn and have fun!</p>
 </header>
@@ -127,7 +148,6 @@ footer {
 <section>
   <h2>🐾 Animal Sounds</h2>
   <p>Tap an animal to hear its sound!</p>
-
   <button class="animal" onclick="playAnimal('dog')">🐶 Dog</button>
   <button class="animal" onclick="playAnimal('cat')">🐱 Cat</button>
   <button class="animal" onclick="playAnimal('cow')">🐮 Cow</button>
@@ -183,11 +203,16 @@ footer {
 </section>
 
 <section>
-  <h2>🎈 Pop the Balloons</h2>
-  <p>Tap the balloons to pop them!</p>
-  <p class="gameMessage" id="balloonScore">Score: 0</p>
+  <h2>🎈 Balloon Pop Challenge</h2>
+  <p>Pop 15 balloons in 30 seconds to win!</p>
+  <p>⭐ Normal balloon = 1 point</p>
+  <p>🌟 Golden balloon = 3 points</p>
+  <p class="gameMessage" id="balloonScore">Score: 0 / 15</p>
+  <p class="gameMessage" id="balloonTime">Time: 30 seconds</p>
+  <p id="balloonMessage">Ready for the challenge?</p>
   <div id="balloonArea"></div>
-  <button class="gameButton" onclick="startBalloons()">Start Game</button>
+  <button class="gameButton" onclick="startBalloons()">🎈 Start Challenge</button>
+  <button class="stop" onclick="stopBalloons()">Stop Game</button>
 </section>
 
 <section>
@@ -208,8 +233,10 @@ footer {
 
 <section>
   <h2>🌙 Sweet Dreams</h2>
-  <p>Time to relax, little star!</p>
-  <button onclick="dreamTime()">🌙 Sleep Time</button>
+  <p>Relax and enjoy a gentle BabyJoy lullaby.</p>
+  <button onclick="dreamTime()">🌙 Play Lullaby</button>
+  <button class="stop" onclick="stopLullaby()">⏹ Stop Lullaby</button>
+  <p id="sleepMessage">Your peaceful lullaby is ready. ✨</p>
 </section>
 
 <footer>
@@ -237,12 +264,15 @@ const animalSounds = {
 let currentAnimal = null;
 
 function playAnimal(animal) {
+  stopLullaby();
+
   if (currentAnimal) {
     currentAnimal.pause();
     currentAnimal.currentTime = 0;
   }
 
   currentAnimal = new Audio(animalSounds[animal]);
+
   currentAnimal.play().catch(() => {
     alert("Sound could not play. Please check your internet connection.");
   });
@@ -339,10 +369,10 @@ let musicTimer = null;
 let musicStopTimer = null;
 
 function playMusic() {
+  stopLullaby();
   stopMusic();
 
   const AudioClass = window.AudioContext || window.webkitAudioContext;
-
   if (!AudioClass) {
     alert("Music is not supported on this browser.");
     return;
@@ -396,9 +426,6 @@ function playMusic() {
 
     document.getElementById("musicMessage").textContent =
       "Enjoy your BabyJoy music! 🎶";
-  }).catch(() => {
-    stopMusic();
-    alert("Please tap Play Music again.");
   });
 }
 
@@ -410,9 +437,9 @@ function stopMusic() {
   musicStopTimer = null;
 
   if (musicContext) {
-    const oldContext = musicContext;
+    const old = musicContext;
     musicContext = null;
-    oldContext.close();
+    old.close();
   }
 
   const message = document.getElementById("musicMessage");
@@ -439,43 +466,133 @@ function makeBubbles() {
   }
 }
 
-// BALLOON GAME
+// BALLOON POP CHALLENGE
 
 let balloonPoints = 0;
+let balloonSeconds = 30;
+let balloonSpawnTimer = null;
+let balloonClockTimer = null;
+let balloonRunning = false;
+let balloonId = 0;
 
 function startBalloons() {
+  stopBalloons();
+
   balloonPoints = 0;
-  updateBalloonScore();
+  balloonSeconds = 30;
+  balloonRunning = true;
+
+  document.getElementById("balloonArea").innerHTML = "";
+  document.getElementById("balloonMessage").textContent =
+    "Go! Pop the balloons! 🎈";
+
+  updateBalloonDisplay();
+
+  spawnBalloon();
+
+  balloonClockTimer = setInterval(() => {
+    if (!balloonRunning) return;
+
+    balloonSeconds--;
+    updateBalloonDisplay();
+
+    if (balloonSeconds <= 0) {
+      finishBalloons();
+    }
+  }, 1000);
+}
+
+function spawnBalloon() {
+  if (!balloonRunning) return;
 
   const area = document.getElementById("balloonArea");
-  area.innerHTML = "";
 
-  const balloons = ["🎈", "🎈", "🎈", "🎈", "🎈", "🎈", "🎈", "🎈"];
+  if (area.querySelectorAll(".flyingBalloon").length < 6) {
+    const balloon = document.createElement("button");
+    const isBonus = Math.random() < 0.18;
+    const id = ++balloonId;
 
-  balloons.forEach(() => {
-    const button = document.createElement("button");
-    button.className = "balloon";
-    button.textContent = "🎈";
+    balloon.className = "flyingBalloon" + (isBonus ? " bonus" : "");
+    balloon.textContent = isBonus ? "🌟" :
+      ["🎈", "🩷", "💜", "💛", "💚"][Math.floor(Math.random() * 5)];
 
-    button.onclick = () => {
-      if (button.disabled) return;
-      button.disabled = true;
-      button.textContent = "✨";
-      balloonPoints++;
-      updateBalloonScore();
+    balloon.style.left = (5 + Math.random() * 82) + "%";
+    balloon.style.animationDuration =
+      Math.max(1.8, 3.5 - balloonPoints * 0.08) + "s";
 
-      if (balloonPoints === balloons.length) {
-        speak("Amazing! You popped all the balloons!");
+    balloon.onclick = () => {
+      if (!balloonRunning || balloon.disabled) return;
+
+      balloon.disabled = true;
+      balloonPoints += isBonus ? 3 : 1;
+      balloon.textContent = "✨";
+      balloon.style.animation = "none";
+      balloon.style.transform = "scale(1.5)";
+      balloon.style.opacity = "0";
+
+      setTimeout(() => balloon.remove(), 180);
+
+      updateBalloonDisplay();
+
+      if (balloonPoints >= 15) {
+        finishBalloons(true);
       }
     };
 
-    area.appendChild(button);
-  });
+    balloon.addEventListener("animationend", () => {
+      if (!balloon.disabled && balloonRunning) {
+        balloonPoints = Math.max(0, balloonPoints - 1);
+        updateBalloonDisplay();
+      }
+      balloon.remove();
+    });
+
+    area.appendChild(balloon);
+  }
+
+  const delay = Math.max(350, 950 - balloonPoints * 35);
+
+  balloonSpawnTimer = setTimeout(spawnBalloon, delay);
 }
 
-function updateBalloonScore() {
+function updateBalloonDisplay() {
   document.getElementById("balloonScore").textContent =
-    "Score: " + balloonPoints;
+    "Score: " + balloonPoints + " / 15";
+
+  document.getElementById("balloonTime").textContent =
+    "Time: " + balloonSeconds + " seconds";
+}
+
+function finishBalloons(won = false) {
+  if (!balloonRunning) return;
+
+  balloonRunning = false;
+  clearTimeout(balloonSpawnTimer);
+  clearInterval(balloonClockTimer);
+
+  if (won || balloonPoints >= 15) {
+    document.getElementById("balloonMessage").textContent =
+      "🏆 Amazing! You won the challenge!";
+    speak("Amazing! You won the balloon challenge!");
+  } else {
+    document.getElementById("balloonMessage").textContent =
+      "Great try! Press Start Challenge to play again.";
+  }
+}
+
+function stopBalloons() {
+  balloonRunning = false;
+  clearTimeout(balloonSpawnTimer);
+  clearInterval(balloonClockTimer);
+
+  balloonSpawnTimer = null;
+  balloonClockTimer = null;
+
+  const area = document.getElementById("balloonArea");
+  if (area) area.innerHTML = "";
+
+  const message = document.getElementById("balloonMessage");
+  if (message) message.textContent = "Game stopped.";
 }
 
 // COLOUR MATCHING GAME
@@ -593,7 +710,19 @@ function updateNumberScore() {
     "Score: " + numberPoints;
 }
 
-// SWEET DREAMS
+// SWEET DREAMS ORIGINAL LULLABY
+
+let lullabyContext = null;
+let lullabyTimer = null;
+let lullabyStopTimer = null;
+let lullabyIndex = 0;
+
+const lullabyNotes = [
+  392, 440, 523.25, 440,
+  392, 349.23, 392, 440,
+  523.25, 587.33, 523.25, 440,
+  392, 349.23, 329.63, 392
+];
 
 function dreamTime() {
   stopMusic();
@@ -601,13 +730,91 @@ function dreamTime() {
   if (currentAnimal) {
     currentAnimal.pause();
     currentAnimal.currentTime = 0;
+    currentAnimal = null;
   }
 
   if ("speechSynthesis" in window) {
     speechSynthesis.cancel();
   }
 
-  speak("Good night, little star. Sweet dreams!");
+  stopLullaby();
+
+  const AudioClass = window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioClass) {
+    document.getElementById("sleepMessage").textContent =
+      "Lullaby is not supported on this browser.";
+    return;
+  }
+
+  const ctx = new AudioClass();
+  lullabyContext = ctx;
+  lullabyIndex = 0;
+
+  document.getElementById("sleepMessage").textContent =
+    "🌙 Sweet dreams! Enjoy your gentle lullaby.";
+
+  function playLullabyNote() {
+    if (lullabyContext !== ctx) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.value = lullabyNotes[lullabyIndex];
+
+    const now = ctx.currentTime;
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(0.045, now + 0.18);
+    gain.gain.setTargetAtTime(0.0001, now + 0.35, 0.22);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 1.2);
+
+    lullabyIndex = (lullabyIndex + 1) % lullabyNotes.length;
+
+    lullabyTimer = setTimeout(playLullabyNote, 850);
+  }
+
+  ctx.resume().then(() => {
+    if (lullabyContext !== ctx) return;
+
+    playLullabyNote();
+
+    lullabyStopTimer = setTimeout(() => {
+      stopLullaby();
+      document.getElementById("sleepMessage").textContent =
+        "Good night, little star. Sweet dreams! 🌙";
+    }, 180000);
+  }).catch(() => {
+    stopLullaby();
+    document.getElementById("sleepMessage").textContent =
+      "Please tap Play Lullaby again.";
+  });
+}
+
+function stopLullaby() {
+  clearTimeout(lullabyTimer);
+  clearTimeout(lullabyStopTimer);
+
+  lullabyTimer = null;
+  lullabyStopTimer = null;
+
+  if (lullabyContext) {
+    const old = lullabyContext;
+    lullabyContext = null;
+    old.close();
+  }
+
+  const message = document.getElementById("sleepMessage");
+
+  if (message) {
+    message.textContent = "Lullaby stopped. 🌙";
+  }
 }
 
 </script>
