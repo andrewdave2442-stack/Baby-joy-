@@ -114,7 +114,7 @@ footer {
 <body>
 
 <header>
-  <h1>🌈 BabyJoy 🌈</h1>
+  <h1>🌹 BabyJoy 🌺</h1>
   <h2 style="color:white;">Little Fun World</h2>
   <p>Play, learn and have fun!</p>
 </header>
