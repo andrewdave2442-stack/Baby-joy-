@@ -3,11 +3,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BabyJoy - Little Fun World</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -21,82 +23,84 @@ header {
   background: #ff83b8;
   color: white;
   padding: 25px 10px;
+}
+
+header h1 {
+  margin: 0;
   font-size: 30px;
-  font-weight: bold;
 }
 
-header small { font-size: 17px; }
-
-.card {
+section {
   background: white;
-  margin: 15px;
-  padding: 22px 12px;
-  border-radius: 22px;
-  box-shadow: 0 3px 10px #eac5db;
+  margin: 18px 12px;
+  padding: 20px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px #e8c5d8;
 }
 
-h2 { color: #9b59b6; }
+h2 {
+  color: #e7549b;
+}
 
 button {
-  background: #8b72ee;
-  color: white;
   border: none;
-  padding: 14px;
-  margin: 6px;
   border-radius: 15px;
-  font-size: 18px;
+  padding: 13px 17px;
+  margin: 6px;
+  font-size: 17px;
+  background: #ff83b8;
+  color: white;
   cursor: pointer;
 }
 
 button:active {
-  transform: scale(.95);
-  background: #ff83b8;
+  transform: scale(0.95);
 }
 
-.animal-button {
-  min-width: 105px;
+.animal {
+  background: #a879e8;
 }
 
-.number-button {
-  min-width: 55px;
-  font-size: 23px;
+.learning {
+  background: #55b9d6;
 }
 
-.letter-button {
-  min-width: 43px;
-  font-size: 20px;
+.stop {
+  background: #777;
 }
 
-.color-button {
-  min-width: 90px;
-  min-height: 65px;
-}
-
-.fruit {
-  font-size: 55px;
-  display: inline-block;
-  margin: 8px;
-}
-
-#message, #learningMessage {
-  font-weight: bold;
-  color: #ff69a6;
-  font-size: 18px;
-  min-height: 25px;
+#bubbleArea {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  background: #e6f7ff;
+  border-radius: 15px;
+  margin-top: 12px;
 }
 
 .bubble {
-  font-size: 38px;
-  animation: float 2s infinite alternate;
+  position: absolute;
+  bottom: -50px;
+  border-radius: 50%;
+  background: #ff9ed0;
+  opacity: 0.75;
+  animation: floatUp 4s linear forwards;
 }
 
-@keyframes float {
-  from { transform: translateY(0); }
-  to { transform: translateY(-12px); }
+@keyframes floatUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-250px);
+  }
 }
 
 footer {
   padding: 20px;
+  background: #ff83b8;
+  color: white;
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -104,273 +108,218 @@ footer {
 <body>
 
 <header>
- 🌹 BabyJoy 🌹
-<br>
-<small>Little Fun World</small>
+  <h1>🌹 BabyJoy 🌹</h1>
+  <h2 style="color:white;">Little Fun World</h2>
+  <p>Play, learn and have fun!</p>
 </header>
 
-<div class="card">
-<h2>⭐ Welcome, Little Star!</h2>
-<p>Let's play, explore and learn!</p>
-🐻 🐰 🐼 🦋
-</div>
+<section>
+  <h2>⭐ Welcome, Little Star!</h2>
+  <p>Let's play and learn!</p>
+</section>
 
-<!-- ANIMAL SOUNDS -->
+<section>
+  <h2>🐾 Animal Sounds</h2>
+  <p>Tap an animal to hear its sound!</p>
 
-<div class="card">
-<h2>🐾 Animal Sounds</h2>
-<p>Touch an animal to hear its sound!</p>
-<div id="animals"></div>
-<p id="message">Tap an animal! ❤️</p>
-<button onclick="stopSound()">🔇 Stop Sound</button>
-</div>
+  <button class="animal" onclick="playAnimal('dog')">🐶 Dog</button>
+  <button class="animal" onclick="playAnimal('cat')">🐱 Cat</button>
+  <button class="animal" onclick="playAnimal('cow')">🐮 Cow</button>
+  <button class="animal" onclick="playAnimal('duck')">🦆 Duck</button>
+  <button class="animal" onclick="playAnimal('frog')">🐸 Frog</button>
+  <button class="animal" onclick="playAnimal('monkey')">🐵 Monkey</button>
+  <button class="animal" onclick="playAnimal('lion')">🦁 Lion</button>
+  <button class="animal" onclick="playAnimal('elephant')">🐘 Elephant</button>
+  <button class="animal" onclick="playAnimal('chicken')">🐔 Chicken</button>
+  <button class="animal" onclick="playAnimal('sheep')">🐑 Sheep</button>
+</section>
 
-<!-- NUMBERS -->
+<section>
+  <h2>🔢 Learn Numbers</h2>
+  <p>Tap a number and listen!</p>
+  <div id="numbers"></div>
+</section>
 
-<div class="card">
-<h2>🔢 Learn Numbers</h2>
-<p>Tap a number to hear its name!</p>
-<div id="numbers"></div>
-<p id="numberMessage">Let's count together! ⭐</p>
-</div>
+<section>
+  <h2>🔤 Learn the Alphabet</h2>
+  <p>Tap a letter and listen!</p>
+  <div id="alphabet"></div>
+</section>
 
-<!-- ALPHABET -->
+<section>
+  <h2>🎨 Learn Colours</h2>
+  <p>Discover beautiful colours!</p>
+  <div id="colours"></div>
+</section>
 
-<div class="card">
-<h2>🔤 Learn the Alphabet</h2>
-<p>Tap a letter to hear it!</p>
-<div id="letters"></div>
-<p id="letterMessage">A B C, come learn with me!</p>
-</div>
+<section>
+  <h2>🍎 Learn Fruits</h2>
+  <p>Discover yummy fruits!</p>
+  <div id="fruits"></div>
+</section>
 
-<!-- COLOURS -->
+<section>
+  <h2>🎵 Music Corner</h2>
+  <p>Enjoy a happy BabyJoy tune!</p>
+  <button onclick="playMusic()">▶️ Play Music</button>
+  <button class="stop" onclick="stopMusic()">⏹ Stop Music</button>
+  <p id="musicMessage">Music plays for up to 3 minutes.</p>
+</section>
 
-<div class="card">
-<h2>🎨 Colour World</h2>
-<p>Tap a colour to learn its name!</p>
-<div id="colors"></div>
-<p id="colorMessage">Colours are beautiful! 🌈</p>
-</div>
+<section>
+  <h2>🫧 Bubble Fun</h2>
+  <p>Pop and play with the bubbles!</p>
+  <button onclick="makeBubbles()">🫧 Make Bubbles</button>
+  <div id="bubbleArea" onclick="makeBubbles()"></div>
+</section>
 
-<!-- FRUITS -->
-
-<div class="card">
-<h2>🍎 Fruit Garden</h2>
-<p>Tap a fruit to learn its name!</p>
-<div id="fruits"></div>
-<p id="fruitMessage">Yummy fruits! ❤️</p>
-</div>
-
-<!-- MUSIC -->
-
-<div class="card">
-<h2>🎵 Music Corner</h2>
-<p>Enjoy a happy little tune!</p>
-<button onclick="playMusic()">🎶 Play Happy Tune</button>
-<button onclick="stopMusic()">⏹ Stop Music</button>
-</div>
-
-<!-- BUBBLES -->
-
-<div class="card">
-<h2>🫧 Bubble Fun</h2>
-<div class="bubble">🫧 🫧 🫧</div>
-<p>Pop and play, little star!</p>
-<button onclick="popBubbles()">Pop bubbles!</button>
-<p id="bubbleMessage"></p>
-</div>
-
-<!-- DREAMS -->
-
-<div class="card">
-<h2>🌙 Sweet Dreams</h2>
-<p>Time to relax, little star!</p>
-🌙 ⭐ 💤
-<br>
-<button onclick="dreamTime()">Sweet Dreams</button>
-</div>
+<section>
+  <h2>🌙 Sweet Dreams</h2>
+  <p>Time to relax, little star!</p>
+  <button onclick="dreamTime()">🌙 Sleep Time</button>
+</section>
 
 <footer>
-⭐ BabyJoy - Little Fun World ⭐
-<p>Made with love for little learners ❤️</p>
+  ⭐ Have fun with BabyJoy! ⭐
+  <p>Little Fun World 🌈</p>
 </footer>
 
 <script>
 
-// SPEECH SUPPORT
+// ANIMAL SOUNDS
+
+const animalSounds = {
+  dog: "https://sfxmint.com/dl/animal-dog-bark-25.mp3",
+  cat: "https://sfxmint.com/dl/animal-cat-meow-34.mp3",
+  cow: "https://sfxmint.com/dl/cow-moo-02.mp3",
+  duck: "https://sfxmint.com/dl/duck-quack-02.mp3",
+  frog: "https://sfxmint.com/dl/animal-frog-14.mp3",
+  monkey: "https://sfxmint.com/dl/monkey-chatter-01.mp3",
+  lion: "https://sfxmint.com/dl/lion-roar-01.mp3",
+  elephant: "https://sfxmint.com/dl/elephant-trumpet-01.mp3",
+  chicken: "https://sfxmint.com/dl/hen-cluck-02.mp3",
+  sheep: "https://sfxmint.com/dl/sheep-bleat-02.mp3"
+};
+
+let currentAnimal = null;
+
+function playAnimal(animal) {
+  if (currentAnimal) {
+    currentAnimal.pause();
+    currentAnimal.currentTime = 0;
+  }
+
+  currentAnimal = new Audio(animalSounds[animal]);
+
+  currentAnimal.play().catch(() => {
+    alert("Sound could not play. Please check your internet connection.");
+  });
+}
+
+// SPEAKING FUNCTION
 
 function speak(words) {
   if (!("speechSynthesis" in window)) {
-    alert("Speech is not supported on this browser.");
+    alert("Speech is not supported by this browser.");
     return;
   }
 
   speechSynthesis.cancel();
 
   const message = new SpeechSynthesisUtterance(words);
-  message.lang = "en-GB";
-  message.rate = 0.8;
+  message.rate = 0.85;
   message.pitch = 1.2;
 
   speechSynthesis.speak(message);
 }
 
-// ANIMAL SOUNDS
-
-const animalSounds = {
-  dog: ["🐶", "Dog", "https://sfxmint.com/dl/animal-dog-bark-25.mp3"],
-  cat: ["🐱", "Cat", "https://sfxmint.com/dl/animal-cat-meow-34.mp3"],
-  cow: ["🐮", "Cow", "https://sfxmint.com/dl/cow-moo-02.mp3"],
-  duck: ["🦆", "Duck", "https://sfxmint.com/dl/duck-quack-02.mp3"],
-  frog: ["🐸", "Frog", "https://sfxmint.com/dl/animal-frog-14.mp3"],
-  monkey: ["🐵", "Monkey", "https://sfxmint.com/dl/monkey-chatter-01.mp3"],
-  lion: ["🦁", "Lion", "https://sfxmint.com/dl/lion-roar-01.mp3"],
-  elephant: ["🐘", "Elephant", "https://sfxmint.com/dl/elephant-trumpet-01.mp3"],
-  chicken: ["🐔", "Chicken", "https://sfxmint.com/dl/hen-cluck-02.mp3"],
-  sheep: ["🐑", "Sheep", "https://sfxmint.com/dl/sheep-bleat-02.mp3"]
-};
-
-let currentAudio = null;
-
-Object.keys(animalSounds).forEach(key => {
-  const a = animalSounds[key];
-  const button = document.createElement("button");
-
-  button.className = "animal-button";
-  button.textContent = a[0] + " " + a[1];
-  button.onclick = () => playAnimal(key);
-
-  document.getElementById("animals").appendChild(button);
-});
-
-function playAnimal(name) {
-  stopSound();
-
-  const a = animalSounds[name];
-  currentAudio = new Audio(a[2]);
-  currentAudio.volume = 0.8;
-
-  document.getElementById("message").textContent =
-    "Hello from the " + a[1] + "! ❤️";
-
-  currentAudio.play().catch(() => {
-    document.getElementById("message").textContent =
-      "Sound unavailable. Please try again.";
-  });
-}
-
-function stopSound() {
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-    currentAudio = null;
-  }
-}
-
 // NUMBERS
 
-const numbers = [
-  "One", "Two", "Three", "Four", "Five",
-  "Six", "Seven", "Eight", "Nine", "Ten"
-];
+const numbers = document.getElementById("numbers");
 
-numbers.forEach((word, i) => {
+for (let i = 1; i <= 10; i++) {
   const button = document.createElement("button");
-  button.className = "number-button";
-  button.textContent = i + 1;
+  button.className = "learning";
+  button.textContent = i;
 
-  button.onclick = () => {
-    document.getElementById("numberMessage").textContent =
-      i + 1 + " - " + word + "! ⭐";
-    speak(word);
-  };
+  button.onclick = () => speak(String(i));
 
-  document.getElementById("numbers").appendChild(button);
-});
+  numbers.appendChild(button);
+}
 
 // ALPHABET
 
+const alphabet = document.getElementById("alphabet");
+
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter => {
   const button = document.createElement("button");
-  button.className = "letter-button";
+  button.className = "learning";
   button.textContent = letter;
 
-  button.onclick = () => {
-    document.getElementById("letterMessage").textContent =
-      "Letter " + letter + "! ❤️";
-    speak(letter);
-  };
+  button.onclick = () => speak(letter);
 
-  document.getElementById("letters").appendChild(button);
+  alphabet.appendChild(button);
 });
 
 // COLOURS
 
-const colors = [
-  ["Red", "#ff3333"],
-  ["Blue", "#3388ff"],
-  ["Yellow", "#ffd633"],
-  ["Green", "#36bb65"],
-  ["Pink", "#ff83b8"],
-  ["Purple", "#9864dd"],
-  ["Orange", "#ff9933"],
-  ["Brown", "#996633"],
-  ["Black", "#333333"],
-  ["White", "#eeeeee"]
+const colourList = [
+  ["🔴 Red", "Red"],
+  ["🔵 Blue", "Blue"],
+  ["🟡 Yellow", "Yellow"],
+  ["🟢 Green", "Green"],
+  ["🟠 Orange", "Orange"],
+  ["🟣 Purple", "Purple"],
+  ["⚫ Black", "Black"],
+  ["⚪ White", "White"],
+  ["🩷 Pink", "Pink"],
+  ["🤎 Brown", "Brown"]
 ];
 
-colors.forEach(c => {
+const colours = document.getElementById("colours");
+
+colourList.forEach(item => {
   const button = document.createElement("button");
-  button.className = "color-button";
-  button.textContent = c[0];
-  button.style.background = c[1];
+  button.className = "learning";
+  button.textContent = item[0];
 
-  if (c[0] === "Yellow" || c[0] === "White") {
-    button.style.color = "#663399";
-  }
+  button.onclick = () => speak(item[1]);
 
-  button.onclick = () => {
-    document.getElementById("colorMessage").textContent =
-      "This colour is " + c[0] + "! 🎨";
-    speak(c[0]);
-  };
-
-  document.getElementById("colors").appendChild(button);
+  colours.appendChild(button);
 });
 
 // FRUITS
 
-const fruits = [
-  ["🍎", "Apple"],
-  ["🍌", "Banana"],
-  ["🍊", "Orange"],
-  ["🍇", "Grapes"],
-  ["🍓", "Strawberry"],
-  ["🍍", "Pineapple"],
-  ["🥭", "Mango"],
-  ["🍉", "Watermelon"],
-  ["🍐", "Pear"],
-  ["🍒", "Cherries"]
+const fruitList = [
+  ["🍎 Apple", "Apple"],
+  ["🍌 Banana", "Banana"],
+  ["🍊 Orange", "Orange"],
+  ["🍇 Grapes", "Grapes"],
+  ["🍉 Watermelon", "Watermelon"],
+  ["🍍 Pineapple", "Pineapple"],
+  ["🥭 Mango", "Mango"],
+  ["🍓 Strawberry", "Strawberry"],
+  ["🍐 Pear", "Pear"],
+  ["🍒 Cherry", "Cherry"]
 ];
 
-fruits.forEach(f => {
+const fruits = document.getElementById("fruits");
+
+fruitList.forEach(item => {
   const button = document.createElement("button");
-  button.innerHTML =
-    '<span class="fruit">' + f[0] + '</span><br>' + f[1];
+  button.className = "learning";
+  button.textContent = item[0];
 
-  button.onclick = () => {
-    document.getElementById("fruitMessage").textContent =
-      f[1] + "! Yummy! 🍓";
-    speak(f[1]);
-  };
+  button.onclick = () => speak(item[1]);
 
-  document.getElementById("fruits").appendChild(button);
+  fruits.appendChild(button);
 });
 
-// HAPPY ORIGINAL TUNE
+// BABYJOY 3-MINUTE MUSIC CORNER
 
+let musicContext = null;
 let musicTimer = null;
-let musicAudio = null;
+let musicStopTimer = null;
 
 function playMusic() {
   stopMusic();
@@ -384,20 +333,19 @@ function playMusic() {
   }
 
   const ctx = new AudioContextClass();
+  musicContext = ctx;
 
   const melody = [
     523.25, 587.33, 659.25, 783.99,
-    659.25, 587.33, 523.25, 392
+    659.25, 587.33, 523.25, 392,
+    440, 523.25, 659.25, 587.33,
+    523.25, 440, 392, 523.25
   ];
 
   let index = 0;
 
   function note() {
-    if (index >= melody.length) {
-      ctx.close();
-      musicTimer = null;
-      return;
-    }
+    if (musicContext !== ctx) return;
 
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -407,46 +355,100 @@ function playMusic() {
 
     gain.gain.setValueAtTime(0.0001, ctx.currentTime);
     gain.gain.linearRampToValueAtTime(
-      0.12, ctx.currentTime + 0.04
+      0.10, ctx.currentTime + 0.04
     );
     gain.gain.exponentialRampToValueAtTime(
-      0.0001, ctx.currentTime + 0.3
+      0.0001, ctx.currentTime + 0.32
     );
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
     osc.start();
-    osc.stop(ctx.currentTime + 0.32);
+    osc.stop(ctx.currentTime + 0.34);
 
-    index++;
+    index = (index + 1) % melody.length;
+
     musicTimer = setTimeout(note, 380);
   }
 
-  ctx.resume().then(note);
+  ctx.resume().then(() => {
+    if (musicContext !== ctx) return;
+
+    note();
+
+    musicStopTimer = setTimeout(() => {
+      stopMusic();
+      document.getElementById("musicMessage").textContent =
+        "Music time is finished! 🎵";
+    }, 180000);
+
+    document.getElementById("musicMessage").textContent =
+      "Enjoy your BabyJoy music! 🎶";
+  }).catch(() => {
+    stopMusic();
+    alert("Please tap Play Music again.");
+  });
 }
 
 function stopMusic() {
-  if (musicTimer) {
-    clearTimeout(musicTimer);
-    musicTimer = null;
+  clearTimeout(musicTimer);
+  clearTimeout(musicStopTimer);
+
+  musicTimer = null;
+  musicStopTimer = null;
+
+  if (musicContext) {
+    const oldContext = musicContext;
+    musicContext = null;
+    oldContext.close();
+  }
+
+  const message = document.getElementById("musicMessage");
+
+  if (message) {
+    message.textContent = "Music stopped. 🎵";
   }
 }
 
 // BUBBLE FUN
 
-function popBubbles() {
-  document.getElementById("bubbleMessage").textContent =
-    "POP! POP! POP! 🫧✨";
+function makeBubbles() {
+  const area = document.getElementById("bubbleArea");
+
+  for (let i = 0; i < 12; i++) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+
+    const size = Math.random() * 30 + 15;
+
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
+    bubble.style.left = Math.random() * 90 + "%";
+    bubble.style.animationDuration =
+      (Math.random() * 3 + 2) + "s";
+
+    area.appendChild(bubble);
+
+    setTimeout(() => bubble.remove(), 5000);
+  }
 }
 
 // SWEET DREAMS
 
 function dreamTime() {
-  stopSound();
   stopMusic();
-  speechSynthesis.cancel();
-  alert("Good night, little star! 🌙");
+
+  if (currentAnimal) {
+    currentAnimal.pause();
+    currentAnimal.currentTime = 0;
+  }
+
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
+  }
+
+  speak("Good night, little star. Sweet dreams!");
 }
 
 </script>
