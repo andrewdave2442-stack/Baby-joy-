@@ -5,819 +5,403 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BabyJoy - Little Fun World</title>
-
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  text-align: center;
-  font-family: Arial, sans-serif;
-  background: #fff0f7;
-  color: #663399;
-}
-
-header {
-  background: #ff83b8;
-  color: white;
-  padding: 25px 10px;
-}
-
-header h1 { margin: 0; font-size: 32px; }
-
-section {
-  background: white;
-  margin: 18px 12px;
-  padding: 20px 12px;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px #e8c5d8;
-}
-
-h2 { color: #e7549b; }
-
-button {
-  border: none;
-  border-radius: 15px;
-  padding: 13px 16px;
-  margin: 6px;
-  font-size: 17px;
-  background: #ff83b8;
-  color: white;
-  cursor: pointer;
-}
-
-button:active { transform: scale(.94); }
-
-.animal { background: #a879e8; }
-.learning { background: #55b9d6; }
-.gameButton { background: #ff9b45; }
-.stop { background: #777; }
-
-#bubbleArea {
-  position: relative;
-  height: 180px;
-  overflow: hidden;
-  background: #e6f7ff;
-  border-radius: 15px;
-  margin-top: 12px;
-}
-
-.bubble {
-  position: absolute;
-  bottom: -50px;
-  border-radius: 50%;
-  background: #ff9ed0;
-  opacity: .75;
-  animation: floatUp 4s linear forwards;
-}
-
-@keyframes floatUp {
-  to { transform: translateY(-250px); }
-}
-
-#balloonArea {
-  position: relative;
-  height: 300px;
-  overflow: hidden;
-  background: linear-gradient(#dff5ff, #fff0fa);
-  border-radius: 18px;
-  margin-top: 12px;
-  border: 2px solid #f5c8e0;
-}
-
-.flyingBalloon {
-  position: absolute;
-  bottom: -65px;
-  padding: 0;
-  margin: 0;
-  background: transparent;
-  border: none;
-  font-size: 45px;
-  line-height: 1;
-  animation: balloonFly 3.5s linear forwards;
-  z-index: 2;
-}
-
-.flyingBalloon.bonus {
-  font-size: 48px;
-  filter: drop-shadow(0 0 7px gold);
-}
-
-@keyframes balloonFly {
-  0% { transform: translateY(0) rotate(-8deg); }
-  25% { transform: translate(15px, -90px) rotate(8deg); }
-  50% { transform: translate(-12px, -180px) rotate(-8deg); }
-  75% { transform: translate(12px, -270px) rotate(8deg); }
-  100% { transform: translate(-8px, -390px) rotate(-5deg); }
-}
-
-.gameMessage {
-  font-size: 19px;
-  font-weight: bold;
-  color: #a34b9b;
-  min-height: 28px;
-}
-
-#sleepMessage {
-  color: #8866aa;
-  font-weight: bold;
-}
-
-footer {
-  padding: 20px;
-  background: #ff83b8;
-  color: white;
-  margin-top: 20px;
-}
+*{box-sizing:border-box}
+body{margin:0;text-align:center;font-family:Arial,sans-serif;background:#fff0f7;color:#663399}
+header{background:#ff83b8;color:white;padding:20px 10px}
+h1{margin:5px}
+.page{display:none;padding:15px}
+#home{display:block}
+.menu,.items{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:650px;margin:15px auto}
+button{border:0;border-radius:18px;padding:15px 10px;font-size:18px;background:#ffb6d5;color:#663399;cursor:pointer;box-shadow:0 3px 6px #0002}
+button:active{transform:scale(.96)}
+.menu button{min-height:95px;font-size:21px;font-weight:bold}
+.home-btn{background:#8bdcff;margin:12px;padding:12px 25px}
+.animal-card{background:white;padding:10px;border-radius:18px;box-shadow:0 3px 7px #0002}
+.animal-card img{width:100%;height:125px;object-fit:cover;border-radius:14px}
+.animal-card p{font-size:20px;margin:8px}
+#animalDisplay{display:none;background:white;border-radius:20px;padding:15px;margin:15px auto;max-width:400px}
+#animalPicture{width:100%;max-height:250px;object-fit:cover;border-radius:15px}
+.big-emoji{font-size:65px;margin:10px}
+#gameArea{height:350px;background:#e4f7ff;border-radius:18px;position:relative;overflow:hidden;margin:15px auto;max-width:500px}
+.balloon{position:absolute;font-size:45px;cursor:pointer;user-select:none}
+#bubbleArea{min-height:250px;background:#dff7ff;border-radius:20px;padding:15px}
+.bubble{display:inline-block;font-size:45px;padding:8px;cursor:pointer}
+input{padding:12px;font-size:20px;border-radius:10px;border:2px solid #ff83b8;width:100px}
+.volumeBox{background:white;padding:12px;border-radius:16px;margin:12px auto;max-width:400px}
+#volumeSlider{width:85%;accent-color:#ff69a8}
+footer{padding:20px;color:#996699}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>🌈 BabyJoy 🌈</h1>
-  <h2 style="color:white;">Little Fun World</h2>
-  <p>Play, learn and have fun!</p>
+<h1>🌈 BabyJoy</h1>
+<p>Little Fun World 🎈</p>
 </header>
 
-<section>
-  <h2>⭐ Welcome, Little Star!</h2>
-  <p>Let's play and learn together!</p>
+<div class="volumeBox">
+<strong>🔊 BabyJoy Volume</strong>
+<p id="volumeLabel">100%</p>
+<input id="volumeSlider" type="range" min="0" max="100" value="100">
+</div>
+
+<section id="home" class="page">
+<h2>Welcome to BabyJoy! 💖</h2>
+<p>Choose what you want to explore.</p>
+<div class="menu">
+<button onclick="showPage('animals')">🐶 Animals</button>
+<button onclick="showPage('learning')">📚 Learning</button>
+<button onclick="showPage('games')">🎮 Games</button>
+<button onclick="showPage('music')">🎵 Music</button>
+<button onclick="showPage('bubbles')">🫧 Bubble Fun</button>
+<button onclick="showPage('dreams')">🌙 Sweet Dreams</button>
+</div>
 </section>
 
-<section>
-  <h2>🐾 Animal Sounds</h2>
-  <p>Tap an animal to hear its sound!</p>
-  <button class="animal" onclick="playAnimal('dog')">🐶 Dog</button>
-  <button class="animal" onclick="playAnimal('cat')">🐱 Cat</button>
-  <button class="animal" onclick="playAnimal('cow')">🐮 Cow</button>
-  <button class="animal" onclick="playAnimal('duck')">🦆 Duck</button>
-  <button class="animal" onclick="playAnimal('frog')">🐸 Frog</button>
-  <button class="animal" onclick="playAnimal('monkey')">🐵 Monkey</button>
-  <button class="animal" onclick="playAnimal('lion')">🦁 Lion</button>
-  <button class="animal" onclick="playAnimal('elephant')">🐘 Elephant</button>
-  <button class="animal" onclick="playAnimal('chicken')">🐔 Chicken</button>
-  <button class="animal" onclick="playAnimal('sheep')">🐑 Sheep</button>
+<section id="animals" class="page">
+<h2>🐾 Animal World</h2>
+<p>Tap an animal to see its picture and hear its sound!</p>
+<div class="items" id="animalList"></div>
+<div id="animalDisplay">
+<h2 id="animalName"></h2>
+<img id="animalPicture" src="" alt="Animal picture">
+<p id="animalMessage"></p>
+<button onclick="repeatAnimal()">🔊 Play Sound Again</button>
+</div>
+<button class="home-btn" onclick="showPage('home')">🏠 Home</button>
 </section>
 
-<section>
-  <h2>🔢 Learn Numbers</h2>
-  <p>Tap a number and listen!</p>
-  <div id="numbers"></div>
+<section id="learning" class="page">
+<h2>📚 Learning Corner</h2>
+<h3>🔢 Numbers</h3>
+<div class="items">
+<button onclick="speak('One')">1️⃣ One</button>
+<button onclick="speak('Two')">2️⃣ Two</button>
+<button onclick="speak('Three')">3️⃣ Three</button>
+<button onclick="speak('Four')">4️⃣ Four</button>
+<button onclick="speak('Five')">5️⃣ Five</button>
+<button onclick="speak('Six')">6️⃣ Six</button>
+<button onclick="speak('Seven')">7️⃣ Seven</button>
+<button onclick="speak('Eight')">8️⃣ Eight</button>
+<button onclick="speak('Nine')">9️⃣ Nine</button>
+<button onclick="speak('Ten')">🔟 Ten</button>
+</div>
+<h3>🔤 Alphabet</h3>
+<div class="items" id="alphabet"></div>
+<h3>🎨 Colours</h3>
+<div class="items">
+<button style="background:red;color:white" onclick="speak('Red')">Red</button>
+<button style="background:blue;color:white" onclick="speak('Blue')">Blue</button>
+<button style="background:yellow" onclick="speak('Yellow')">Yellow</button>
+<button style="background:green;color:white" onclick="speak('Green')">Green</button>
+<button style="background:orange" onclick="speak('Orange')">Orange</button>
+<button style="background:purple;color:white" onclick="speak('Purple')">Purple</button>
+</div>
+<h3>🍎 Fruits</h3>
+<div class="items">
+<button onclick="speak('Apple')">🍎 Apple</button>
+<button onclick="speak('Banana')">🍌 Banana</button>
+<button onclick="speak('Orange')">🍊 Orange</button>
+<button onclick="speak('Grapes')">🍇 Grapes</button>
+<button onclick="speak('Watermelon')">🍉 Watermelon</button>
+<button onclick="speak('Pineapple')">🍍 Pineapple</button>
+</div>
+<button class="home-btn" onclick="showPage('home')">🏠 Home</button>
 </section>
 
-<section>
-  <h2>🔤 Learn the Alphabet</h2>
-  <p>Tap a letter and listen!</p>
-  <div id="alphabet"></div>
+<section id="games" class="page">
+<h2>🎮 Mini Games</h2>
+<h3>🎈 Balloon Pop</h3>
+<p>Collect 15 points in 30 seconds!</p>
+<p>Score: <span id="score">0</span> | Time: <span id="time">30</span></p>
+<button onclick="startBalloonGame()">▶ Start Game</button>
+<button onclick="stopBalloonGame()">⏹ Stop</button>
+<div id="gameArea"></div>
+<h3>🎨 Colour Matching</h3>
+<p id="colourQuestion"></p>
+<div class="items">
+<button style="background:red" onclick="checkColour('Red')">Red</button>
+<button style="background:blue" onclick="checkColour('Blue')">Blue</button>
+<button style="background:green" onclick="checkColour('Green')">Green</button>
+<button style="background:yellow" onclick="checkColour('Yellow')">Yellow</button>
+</div>
+<p id="colourResult"></p>
+<h3>🔢 Find the Number</h3>
+<p id="numberQuestion"></p>
+<div class="items">
+<button onclick="checkNumber(3)">3</button>
+<button onclick="checkNumber(5)">5</button>
+<button onclick="checkNumber(7)">7</button>
+<button onclick="checkNumber(9)">9</button>
+</div>
+<p id="numberResult"></p>
+<button class="home-btn" onclick="showPage('home')">🏠 Home</button>
 </section>
 
-<section>
-  <h2>🎨 Learn Colours</h2>
-  <div id="colours"></div>
+<section id="music" class="page">
+<h2>🎵 Music Corner</h2>
+<p>Enjoy a happy little melody!</p>
+<button onclick="playMusic()">▶ Play Music</button>
+<button onclick="stopMusic()">⏹ Stop Music</button>
+<p>Music plays for up to 3 minutes.</p>
+<button class="home-btn" onclick="showPage('home')">🏠 Home</button>
 </section>
 
-<section>
-  <h2>🍎 Learn Fruits</h2>
-  <div id="fruits"></div>
+<section id="bubbles" class="page">
+<h2>🫧 Bubble Fun</h2>
+<p>Tap the bubbles to pop them!</p>
+<div id="bubbleArea"></div>
+<button onclick="makeBubbles()">✨ More Bubbles</button>
+<button class="home-btn" onclick="showPage('home')">🏠 Home</button>
 </section>
 
-<section>
-  <h2>🎵 Music Corner</h2>
-  <p>Enjoy a happy BabyJoy tune!</p>
-  <button onclick="playMusic()">▶️ Play Music</button>
-  <button class="stop" onclick="stopMusic()">⏹ Stop Music</button>
-  <p id="musicMessage">Music plays for up to 3 minutes.</p>
+<section id="dreams" class="page">
+<h2>🌙 Sweet Dreams</h2>
+<p>Relax with a gentle lullaby.</p>
+<div class="big-emoji">🌟🌙⭐</div>
+<button onclick="playLullaby()">▶ Play Lullaby</button>
+<button onclick="stopLullaby()">⏹ Stop Lullaby</button>
+<p id="dreamMessage">Sweet dreams, little one! 💖</p>
+<button class="home-btn" onclick="showPage('home')">🏠 Home</button>
 </section>
 
-<section>
-  <h2>🫧 Bubble Fun</h2>
-  <p>Tap to make bubbles!</p>
-  <button onclick="makeBubbles()">🫧 Make Bubbles</button>
-  <div id="bubbleArea" onclick="makeBubbles()"></div>
-</section>
-
-<section>
-  <h2>🎮 BabyJoy Mini Games</h2>
-  <p>Let's play some fun games!</p>
-</section>
-
-<section>
-  <h2>🎈 Balloon Pop Challenge</h2>
-  <p>Pop 15 balloons in 30 seconds to win!</p>
-  <p>⭐ Normal balloon = 1 point</p>
-  <p>🌟 Golden balloon = 3 points</p>
-  <p class="gameMessage" id="balloonScore">Score: 0 / 15</p>
-  <p class="gameMessage" id="balloonTime">Time: 30 seconds</p>
-  <p id="balloonMessage">Ready for the challenge?</p>
-  <div id="balloonArea"></div>
-  <button class="gameButton" onclick="startBalloons()">🎈 Start Challenge</button>
-  <button class="stop" onclick="stopBalloons()">Stop Game</button>
-</section>
-
-<section>
-  <h2>🎨 Match the Colours</h2>
-  <p id="colourQuestion" class="gameMessage">Press Start Game!</p>
-  <div id="colourChoices"></div>
-  <p id="colourScore" class="gameMessage">Score: 0</p>
-  <button class="gameButton" onclick="startColourGame()">Start Game</button>
-</section>
-
-<section>
-  <h2>🔢 Find the Number</h2>
-  <p id="numberQuestion" class="gameMessage">Press Start Game!</p>
-  <div id="numberChoices"></div>
-  <p id="numberScore" class="gameMessage">Score: 0</p>
-  <button class="gameButton" onclick="startNumberGame()">Start Game</button>
-</section>
-
-<section>
-  <h2>🌙 Sweet Dreams</h2>
-  <p>Relax and enjoy a gentle BabyJoy lullaby.</p>
-  <button onclick="dreamTime()">🌙 Play Lullaby</button>
-  <button class="stop" onclick="stopLullaby()">⏹ Stop Lullaby</button>
-  <p id="sleepMessage">Your peaceful lullaby is ready. ✨</p>
-</section>
-
-<footer>
-  ⭐ Have fun with BabyJoy! ⭐
-  <p>Little Fun World 🌈</p>
-</footer>
+<footer>Made with 💖 for little explorers | BabyJoy</footer>
 
 <script>
+/* MASTER VOLUME */
+let masterVolume=1;
+const volumeSlider=document.getElementById('volumeSlider');
 
-// ANIMAL SOUNDS
-
-const animalSounds = {
-  dog: "https://sfxmint.com/dl/animal-dog-bark-25.mp3",
-  cat: "https://sfxmint.com/dl/animal-cat-meow-34.mp3",
-  cow: "https://sfxmint.com/dl/cow-moo-02.mp3",
-  duck: "https://sfxmint.com/dl/duck-quack-02.mp3",
-  frog: "https://sfxmint.com/dl/animal-frog-14.mp3",
-  monkey: "https://sfxmint.com/dl/monkey-chatter-01.mp3",
-  lion: "https://sfxmint.com/dl/lion-roar-01.mp3",
-  elephant: "https://sfxmint.com/dl/elephant-trumpet-01.mp3",
-  chicken: "https://sfxmint.com/dl/hen-cluck-02.mp3",
-  sheep: "https://sfxmint.com/dl/sheep-bleat-02.mp3"
-};
-
-let currentAnimal = null;
-
-function playAnimal(animal) {
-  stopLullaby();
-
-  if (currentAnimal) {
-    currentAnimal.pause();
-    currentAnimal.currentTime = 0;
-  }
-
-  currentAnimal = new Audio(animalSounds[animal]);
-
-  currentAnimal.play().catch(() => {
-    alert("Sound could not play. Please check your internet connection.");
-  });
-}
-
-// SPEECH
-
-function speak(words) {
-  if (!("speechSynthesis" in window)) return;
-
-  speechSynthesis.cancel();
-
-  const message = new SpeechSynthesisUtterance(words);
-  message.rate = 0.85;
-  message.pitch = 1.2;
-
-  speechSynthesis.speak(message);
-}
-
-// NUMBERS
-
-const numbers = document.getElementById("numbers");
-
-for (let i = 1; i <= 10; i++) {
-  const button = document.createElement("button");
-  button.className = "learning";
-  button.textContent = i;
-  button.onclick = () => speak(String(i));
-  numbers.appendChild(button);
-}
-
-// ALPHABET
-
-const alphabet = document.getElementById("alphabet");
-
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(letter => {
-  const button = document.createElement("button");
-  button.className = "learning";
-  button.textContent = letter;
-  button.onclick = () => speak(letter);
-  alphabet.appendChild(button);
+volumeSlider.addEventListener('input',function(){
+  masterVolume=Number(this.value)/100;
+  document.getElementById('volumeLabel').textContent=this.value+'%';
+  if(animalAudio) animalAudio.volume=masterVolume;
+  if(musicGain) musicGain.gain.value=0.16*masterVolume;
+  if(lullabyGain) lullabyGain.gain.value=0.045*masterVolume;
 });
 
-// COLOURS
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  document.getElementById(id).style.display='block';
+  stopBalloonGame();
+}
 
-const colourList = [
-  ["🔴 Red", "Red"],
-  ["🔵 Blue", "Blue"],
-  ["🟡 Yellow", "Yellow"],
-  ["🟢 Green", "Green"],
-  ["🟠 Orange", "Orange"],
-  ["🟣 Purple", "Purple"],
-  ["⚫ Black", "Black"],
-  ["⚪ White", "White"],
-  ["🩷 Pink", "Pink"],
-  ["🤎 Brown", "Brown"]
+const animals=[
+{name:'Dog',emoji:'🐶',image:'https://loremflickr.com/320/240/dog',sound:'https://sfxmint.com/dl/animal-dog-bark-25.mp3'},
+{name:'Cat',emoji:'🐱',image:'https://loremflickr.com/320/240/cat',sound:'https://sfxmint.com/dl/animal-cat-meow-34.mp3'},
+{name:'Cow',emoji:'🐮',image:'https://loremflickr.com/320/240/cow',sound:'https://sfxmint.com/dl/cow-moo-02.mp3'},
+{name:'Duck',emoji:'🦆',image:'https://loremflickr.com/320/240/duck',sound:'https://sfxmint.com/dl/duck-quack-02.mp3'},
+{name:'Frog',emoji:'🐸',image:'https://loremflickr.com/320/240/frog',sound:'https://sfxmint.com/dl/animal-frog-14.mp3'},
+{name:'Monkey',emoji:'🐵',image:'https://loremflickr.com/320/240/monkey',sound:'https://sfxmint.com/dl/monkey-chatter-01.mp3'},
+{name:'Lion',emoji:'🦁',image:'https://loremflickr.com/320/240/lion',sound:'https://sfxmint.com/dl/lion-roar-01.mp3'},
+{name:'Elephant',emoji:'🐘',image:'https://loremflickr.com/320/240/elephant',sound:'https://sfxmint.com/dl/elephant-trumpet-01.mp3'},
+{name:'Chicken',emoji:'🐔',image:'https://loremflickr.com/320/240/chicken',sound:'https://sfxmint.com/dl/hen-cluck-02.mp3'},
+{name:'Sheep',emoji:'🐑',image:'https://loremflickr.com/320/240/sheep',sound:'https://sfxmint.com/dl/sheep-bleat-02.mp3'}
 ];
 
-colourList.forEach(item => {
-  const button = document.createElement("button");
-  button.className = "learning";
-  button.textContent = item[0];
-  button.onclick = () => speak(item[1]);
-  document.getElementById("colours").appendChild(button);
+let currentAnimal=null,animalAudio=null;
+
+function buildAnimals(){
+ const list=document.getElementById('animalList');
+ animals.forEach(a=>{
+  const card=document.createElement('div');
+  card.className='animal-card';
+  card.innerHTML='<div class="big-emoji">'+a.emoji+'</div><p>'+a.name+'</p>';
+  card.onclick=()=>selectAnimal(a);
+  list.appendChild(card);
+ });
+}
+
+function selectAnimal(a){
+ currentAnimal=a;
+ document.getElementById('animalDisplay').style.display='block';
+ document.getElementById('animalName').textContent=a.emoji+' '+a.name;
+ document.getElementById('animalPicture').src=a.image;
+ document.getElementById('animalMessage').textContent='This is a '+a.name+'!';
+ repeatAnimal();
+ document.getElementById('animalDisplay').scrollIntoView({behavior:'smooth'});
+}
+
+function repeatAnimal(){
+ if(!currentAnimal)return;
+ if(animalAudio){animalAudio.pause();animalAudio.currentTime=0;}
+ animalAudio=new Audio(currentAnimal.sound);
+ animalAudio.volume=masterVolume;
+ animalAudio.play().catch(()=>{
+  document.getElementById('animalMessage').textContent='Sound could not load. Please try again!';
+ });
+}
+
+function speak(word){
+ if(!('speechSynthesis' in window))return;
+ speechSynthesis.cancel();
+ const msg=new SpeechSynthesisUtterance(word);
+ msg.rate=0.8;
+ msg.volume=masterVolume;
+ speechSynthesis.speak(msg);
+}
+
+'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter=>{
+ const b=document.createElement('button');
+ b.textContent=letter;
+ b.onclick=()=>speak(letter);
+ document.getElementById('alphabet').appendChild(b);
 });
 
-// FRUITS
+/* BALLOON GAME */
+let balloonTimer=null,balloonClock=null,gameScore=0,gameTime=30;
 
-const fruitList = [
-  ["🍎 Apple", "Apple"],
-  ["🍌 Banana", "Banana"],
-  ["🍊 Orange", "Orange"],
-  ["🍇 Grapes", "Grapes"],
-  ["🍉 Watermelon", "Watermelon"],
-  ["🍍 Pineapple", "Pineapple"],
-  ["🥭 Mango", "Mango"],
-  ["🍓 Strawberry", "Strawberry"],
-  ["🍐 Pear", "Pear"],
-  ["🍒 Cherry", "Cherry"]
-];
-
-fruitList.forEach(item => {
-  const button = document.createElement("button");
-  button.className = "learning";
-  button.textContent = item[0];
-  button.onclick = () => speak(item[1]);
-  document.getElementById("fruits").appendChild(button);
-});
-
-// THREE-MINUTE ORIGINAL MUSIC
-
-let musicContext = null;
-let musicTimer = null;
-let musicStopTimer = null;
-
-function playMusic() {
-  stopLullaby();
-  stopMusic();
-
-  const AudioClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioClass) {
-    alert("Music is not supported on this browser.");
-    return;
-  }
-
-  const ctx = new AudioClass();
-  musicContext = ctx;
-
-  const melody = [
-    523.25, 587.33, 659.25, 783.99,
-    659.25, 587.33, 523.25, 392,
-    440, 523.25, 659.25, 587.33,
-    523.25, 440, 392, 523.25
-  ];
-
-  let index = 0;
-
-  function note() {
-    if (musicContext !== ctx) return;
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.value = melody[index];
-
-    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.10, ctx.currentTime + 0.04);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.32);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.34);
-
-    index = (index + 1) % melody.length;
-    musicTimer = setTimeout(note, 380);
-  }
-
-  ctx.resume().then(() => {
-    if (musicContext !== ctx) return;
-
-    note();
-
-    musicStopTimer = setTimeout(() => {
-      stopMusic();
-      document.getElementById("musicMessage").textContent =
-        "Music time is finished! 🎵";
-    }, 180000);
-
-    document.getElementById("musicMessage").textContent =
-      "Enjoy your BabyJoy music! 🎶";
-  });
+function startBalloonGame(){
+ stopBalloonGame();
+ gameScore=0;gameTime=30;
+ updateGameText();
+ const area=document.getElementById('gameArea');
+ area.innerHTML='';
+ balloonTimer=setInterval(()=>{
+  const b=document.createElement('span');
+  b.className='balloon';
+  b.textContent=Math.random()<0.2?'⭐':'🎈';
+  b.style.left=Math.random()*85+'%';
+  b.style.bottom='-50px';
+  area.appendChild(b);
+  let h=-50;
+  const move=setInterval(()=>{
+   h+=4;b.style.bottom=h+'px';
+   if(h>350||!b.isConnected){clearInterval(move);b.remove();}
+  },60);
+  b.onclick=()=>{
+   gameScore+=b.textContent==='⭐'?3:1;
+   updateGameText();b.remove();clearInterval(move);
+   if(gameScore>=15)finishBalloonGame('🎉 You won!');
+  };
+ },700);
+ balloonClock=setInterval(()=>{
+  gameTime--;updateGameText();
+  if(gameTime<=0)finishBalloonGame('⏰ Time is up!');
+ },1000);
+}
+function updateGameText(){
+ document.getElementById('score').textContent=gameScore;
+ document.getElementById('time').textContent=gameTime;
+}
+function finishBalloonGame(message){
+ stopBalloonGame();
+ document.getElementById('gameArea').innerHTML='<h2>'+message+'</h2>';
+}
+function stopBalloonGame(){
+ clearInterval(balloonTimer);clearInterval(balloonClock);
+ balloonTimer=null;balloonClock=null;
 }
 
-function stopMusic() {
-  clearTimeout(musicTimer);
-  clearTimeout(musicStopTimer);
-
-  musicTimer = null;
-  musicStopTimer = null;
-
-  if (musicContext) {
-    const old = musicContext;
-    musicContext = null;
-    old.close();
-  }
-
-  const message = document.getElementById("musicMessage");
-  if (message) message.textContent = "Music stopped. 🎵";
+/* COLOUR GAME */
+const colours=['Red','Blue','Green','Yellow'];
+let correctColour='Red';
+function newColourQuestion(){
+ correctColour=colours[Math.floor(Math.random()*colours.length)];
+ document.getElementById('colourQuestion').textContent='Find the colour: '+correctColour;
+}
+function checkColour(answer){
+ document.getElementById('colourResult').textContent=answer===correctColour?'🎉 Correct!':'Try again!';
+ if(answer===correctColour)newColourQuestion();
 }
 
-// BUBBLE FUN
-
-function makeBubbles() {
-  const area = document.getElementById("bubbleArea");
-
-  for (let i = 0; i < 12; i++) {
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-
-    const size = Math.random() * 30 + 15;
-    bubble.style.width = size + "px";
-    bubble.style.height = size + "px";
-    bubble.style.left = Math.random() * 90 + "%";
-    bubble.style.animationDuration = (Math.random() * 3 + 2) + "s";
-
-    area.appendChild(bubble);
-    setTimeout(() => bubble.remove(), 5000);
-  }
+/* NUMBER GAME */
+let correctNumber=5;
+function newNumberQuestion(){
+ correctNumber=Math.floor(Math.random()*10)+1;
+ document.getElementById('numberQuestion').textContent='Find number '+correctNumber;
+}
+function checkNumber(answer){
+ document.getElementById('numberResult').textContent=answer===correctNumber?'🎉 Well done!':'Try again!';
+ if(answer===correctNumber)newNumberQuestion();
 }
 
-// BALLOON POP CHALLENGE
-
-let balloonPoints = 0;
-let balloonSeconds = 30;
-let balloonSpawnTimer = null;
-let balloonClockTimer = null;
-let balloonRunning = false;
-let balloonId = 0;
-
-function startBalloons() {
-  stopBalloons();
-
-  balloonPoints = 0;
-  balloonSeconds = 30;
-  balloonRunning = true;
-
-  document.getElementById("balloonArea").innerHTML = "";
-  document.getElementById("balloonMessage").textContent =
-    "Go! Pop the balloons! 🎈";
-
-  updateBalloonDisplay();
-
-  spawnBalloon();
-
-  balloonClockTimer = setInterval(() => {
-    if (!balloonRunning) return;
-
-    balloonSeconds--;
-    updateBalloonDisplay();
-
-    if (balloonSeconds <= 0) {
-      finishBalloons();
-    }
-  }, 1000);
+/* BUBBLES */
+function makeBubbles(){
+ const area=document.getElementById('bubbleArea');
+ area.innerHTML='';
+ for(let i=0;i<18;i++){
+  const b=document.createElement('span');
+  b.className='bubble';b.textContent='🫧';
+  b.onclick=()=>{b.textContent='✨';setTimeout(()=>b.remove(),300);};
+  area.appendChild(b);
+ }
 }
 
-function spawnBalloon() {
-  if (!balloonRunning) return;
-
-  const area = document.getElementById("balloonArea");
-
-  if (area.querySelectorAll(".flyingBalloon").length < 6) {
-    const balloon = document.createElement("button");
-    const isBonus = Math.random() < 0.18;
-    const id = ++balloonId;
-
-    balloon.className = "flyingBalloon" + (isBonus ? " bonus" : "");
-    balloon.textContent = isBonus ? "🌟" :
-      ["🎈", "🩷", "💜", "💛", "💚"][Math.floor(Math.random() * 5)];
-
-    balloon.style.left = (5 + Math.random() * 82) + "%";
-    balloon.style.animationDuration =
-      Math.max(1.8, 3.5 - balloonPoints * 0.08) + "s";
-
-    balloon.onclick = () => {
-      if (!balloonRunning || balloon.disabled) return;
-
-      balloon.disabled = true;
-      balloonPoints += isBonus ? 3 : 1;
-      balloon.textContent = "✨";
-      balloon.style.animation = "none";
-      balloon.style.transform = "scale(1.5)";
-      balloon.style.opacity = "0";
-
-      setTimeout(() => balloon.remove(), 180);
-
-      updateBalloonDisplay();
-
-      if (balloonPoints >= 15) {
-        finishBalloons(true);
-      }
-    };
-
-    balloon.addEventListener("animationend", () => {
-      if (!balloon.disabled && balloonRunning) {
-        balloonPoints = Math.max(0, balloonPoints - 1);
-        updateBalloonDisplay();
-      }
-      balloon.remove();
-    });
-
-    area.appendChild(balloon);
-  }
-
-  const delay = Math.max(350, 950 - balloonPoints * 35);
-
-  balloonSpawnTimer = setTimeout(spawnBalloon, delay);
+/* MUSIC */
+let musicContext=null,musicGain=null,musicTimer=null,musicEnd=null;
+function playMusic(){
+ stopMusic();
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC)return;
+ musicContext=new AC();
+ musicGain=musicContext.createGain();
+ musicGain.gain.value=0.16*masterVolume;
+ musicGain.connect(musicContext.destination);
+ const notes=[261.6,293.7,329.6,392,329.6,293.7,261.6,392,440,392,329.6,293.7,261.6,329.6,392,261.6];
+ let index=0;
+ function note(){
+  if(!musicContext)return;
+  const osc=musicContext.createOscillator();
+  const gain=musicContext.createGain();
+  osc.type='sine';
+  osc.frequency.value=notes[index++%notes.length];
+  gain.gain.setValueAtTime(0.8,musicContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,musicContext.currentTime+0.35);
+  osc.connect(gain);gain.connect(musicGain);
+  osc.start();osc.stop(musicContext.currentTime+0.36);
+ }
+ note();musicTimer=setInterval(note,400);
+ musicEnd=setTimeout(stopMusic,180000);
+}
+function stopMusic(){
+ clearInterval(musicTimer);clearTimeout(musicEnd);
+ musicTimer=null;musicEnd=null;
+ if(musicContext){musicContext.close();musicContext=null;}
+ musicGain=null;
 }
 
-function updateBalloonDisplay() {
-  document.getElementById("balloonScore").textContent =
-    "Score: " + balloonPoints + " / 15";
-
-  document.getElementById("balloonTime").textContent =
-    "Time: " + balloonSeconds + " seconds";
+/* LULLABY */
+let lullabyContext=null,lullabyGain=null,lullabyTimer=null,lullabyEnd=null;
+function playLullaby(){
+ stopLullaby();
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC)return;
+ lullabyContext=new AC();
+ lullabyGain=lullabyContext.createGain();
+ lullabyGain.gain.value=0.045*masterVolume;
+ lullabyGain.connect(lullabyContext.destination);
+ const notes=[261.6,329.6,392,329.6,293.7,349.2,392,261.6];
+ let index=0;
+ function note(){
+  if(!lullabyContext)return;
+  const osc=lullabyContext.createOscillator();
+  const gain=lullabyContext.createGain();
+  osc.type='sine';osc.frequency.value=notes[index++%notes.length];
+  gain.gain.setValueAtTime(0.7,lullabyContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,lullabyContext.currentTime+0.9);
+  osc.connect(gain);gain.connect(lullabyGain);
+  osc.start();osc.stop(lullabyContext.currentTime+0.9);
+ }
+ note();lullabyTimer=setInterval(note,1000);
+ lullabyEnd=setTimeout(stopLullaby,180000);
+ document.getElementById('dreamMessage').textContent='Playing a gentle lullaby... 💖';
+}
+function stopLullaby(){
+ clearInterval(lullabyTimer);clearTimeout(lullabyEnd);
+ lullabyTimer=null;lullabyEnd=null;
+ if(lullabyContext){lullabyContext.close();lullabyContext=null;}
+ lullabyGain=null;
+ const msg=document.getElementById('dreamMessage');
+ if(msg)msg.textContent='Lullaby stopped. Sweet dreams! 🌙';
 }
 
-function finishBalloons(won = false) {
-  if (!balloonRunning) return;
-
-  balloonRunning = false;
-  clearTimeout(balloonSpawnTimer);
-  clearInterval(balloonClockTimer);
-
-  if (won || balloonPoints >= 15) {
-    document.getElementById("balloonMessage").textContent =
-      "🏆 Amazing! You won the challenge!";
-    speak("Amazing! You won the balloon challenge!");
-  } else {
-    document.getElementById("balloonMessage").textContent =
-      "Great try! Press Start Challenge to play again.";
-  }
-}
-
-function stopBalloons() {
-  balloonRunning = false;
-  clearTimeout(balloonSpawnTimer);
-  clearInterval(balloonClockTimer);
-
-  balloonSpawnTimer = null;
-  balloonClockTimer = null;
-
-  const area = document.getElementById("balloonArea");
-  if (area) area.innerHTML = "";
-
-  const message = document.getElementById("balloonMessage");
-  if (message) message.textContent = "Game stopped.";
-}
-
-// COLOUR MATCHING GAME
-
-const gameColours = [
-  {name: "Red", emoji: "🔴"},
-  {name: "Blue", emoji: "🔵"},
-  {name: "Yellow", emoji: "🟡"},
-  {name: "Green", emoji: "🟢"},
-  {name: "Orange", emoji: "🟠"},
-  {name: "Purple", emoji: "🟣"}
-];
-
-let correctColour = null;
-let colourPoints = 0;
-
-function startColourGame() {
-  colourPoints = 0;
-  updateColourScore();
-  nextColourQuestion();
-}
-
-function nextColourQuestion() {
-  correctColour = gameColours[
-    Math.floor(Math.random() * gameColours.length)
-  ];
-
-  document.getElementById("colourQuestion").textContent =
-    "Find " + correctColour.name + "!";
-
-  const choices = [...gameColours]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 4);
-
-  if (!choices.some(c => c.name === correctColour.name)) {
-    choices[0] = correctColour;
-  }
-
-  const area = document.getElementById("colourChoices");
-  area.innerHTML = "";
-
-  choices.forEach(colour => {
-    const button = document.createElement("button");
-    button.className = "gameButton";
-    button.textContent = colour.emoji;
-
-    button.onclick = () => {
-      if (colour.name === correctColour.name) {
-        colourPoints++;
-        updateColourScore();
-        speak("Well done!");
-        nextColourQuestion();
-      } else {
-        speak("Try again!");
-      }
-    };
-
-    area.appendChild(button);
-  });
-}
-
-function updateColourScore() {
-  document.getElementById("colourScore").textContent =
-    "Score: " + colourPoints;
-}
-
-// FIND THE NUMBER GAME
-
-let correctNumber = 1;
-let numberPoints = 0;
-
-function startNumberGame() {
-  numberPoints = 0;
-  updateNumberScore();
-  nextNumberQuestion();
-}
-
-function nextNumberQuestion() {
-  correctNumber = Math.floor(Math.random() * 10) + 1;
-
-  document.getElementById("numberQuestion").textContent =
-    "Find number " + correctNumber + "!";
-
-  const choices = new Set([correctNumber]);
-
-  while (choices.size < 4) {
-    choices.add(Math.floor(Math.random() * 10) + 1);
-  }
-
-  const area = document.getElementById("numberChoices");
-  area.innerHTML = "";
-
-  [...choices].sort(() => Math.random() - 0.5).forEach(number => {
-    const button = document.createElement("button");
-    button.className = "gameButton";
-    button.textContent = number;
-
-    button.onclick = () => {
-      if (number === correctNumber) {
-        numberPoints++;
-        updateNumberScore();
-        speak("Excellent! You found it!");
-        nextNumberQuestion();
-      } else {
-        speak("Try again!");
-      }
-    };
-
-    area.appendChild(button);
-  });
-}
-
-function updateNumberScore() {
-  document.getElementById("numberScore").textContent =
-    "Score: " + numberPoints;
-}
-
-// SWEET DREAMS ORIGINAL LULLABY
-
-let lullabyContext = null;
-let lullabyTimer = null;
-let lullabyStopTimer = null;
-let lullabyIndex = 0;
-
-const lullabyNotes = [
-  392, 440, 523.25, 440,
-  392, 349.23, 392, 440,
-  523.25, 587.33, 523.25, 440,
-  392, 349.23, 329.63, 392
-];
-
-function dreamTime() {
-  stopMusic();
-
-  if (currentAnimal) {
-    currentAnimal.pause();
-    currentAnimal.currentTime = 0;
-    currentAnimal = null;
-  }
-
-  if ("speechSynthesis" in window) {
-    speechSynthesis.cancel();
-  }
-
-  stopLullaby();
-
-  const AudioClass = window.AudioContext || window.webkitAudioContext;
-
-  if (!AudioClass) {
-    document.getElementById("sleepMessage").textContent =
-      "Lullaby is not supported on this browser.";
-    return;
-  }
-
-  const ctx = new AudioClass();
-  lullabyContext = ctx;
-  lullabyIndex = 0;
-
-  document.getElementById("sleepMessage").textContent =
-    "🌙 Sweet dreams! Enjoy your gentle lullaby.";
-
-  function playLullabyNote() {
-    if (lullabyContext !== ctx) return;
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.value = lullabyNotes[lullabyIndex];
-
-    const now = ctx.currentTime;
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.linearRampToValueAtTime(0.045, now + 0.18);
-    gain.gain.setTargetAtTime(0.0001, now + 0.35, 0.22);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start(now);
-    osc.stop(now + 1.2);
-
-    lullabyIndex = (lullabyIndex + 1) % lullabyNotes.length;
-
-    lullabyTimer = setTimeout(playLullabyNote, 850);
-  }
-
-  ctx.resume().then(() => {
-    if (lullabyContext !== ctx) return;
-
-    playLullabyNote();
-
-    lullabyStopTimer = setTimeout(() => {
-      stopLullaby();
-      document.getElementById("sleepMessage").textContent =
-        "Good night, little star. Sweet dreams! 🌙";
-    }, 180000);
-  }).catch(() => {
-    stopLullaby();
-    document.getElementById("sleepMessage").textContent =
-      "Please tap Play Lullaby again.";
-  });
-}
-
-function stopLullaby() {
-  clearTimeout(lullabyTimer);
-  clearTimeout(lullabyStopTimer);
-
-  lullabyTimer = null;
-  lullabyStopTimer = null;
-
-  if (lullabyContext) {
-    const old = lullabyContext;
-    lullabyContext = null;
-    old.close();
-  }
-
-  const message = document.getElementById("sleepMessage");
-
-  if (message) {
-    message.textContent = "Lullaby stopped. 🌙";
-  }
-}
-
+/* START */
+buildAnimals();
+makeBubbles();
+newColourQuestion();
+newNumberQuestion();
 </script>
-
 </body>
 </html>
