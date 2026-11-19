@@ -36,7 +36,7 @@ footer{padding:20px;color:#996699}
 <body>
 
 <header>
-<h1>🌈 BabyJoy</h1>
+<h1>🌹BabyJoy🌹</h1>
 <p>Little Fun World 🎈</p>
 </header>
 
