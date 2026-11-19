@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +7,7 @@
 <title>BabyJoy - Little Fun World</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -28,10 +25,6 @@ header {
   font-weight: bold;
 }
 
-header small {
-  font-size: 17px;
-}
-
 .card {
   background: white;
   margin: 15px;
@@ -40,9 +33,7 @@ header small {
   box-shadow: 0 3px 10px #eac5db;
 }
 
-h2 {
-  color: #9b59b6;
-}
+h2 { color: #9b59b6; }
 
 button {
   background: #8b72ee;
@@ -52,16 +43,14 @@ button {
   margin: 7px;
   border-radius: 16px;
   font-size: 19px;
-  cursor: pointer;
+}
+
+.animal-button {
+  min-width: 110px;
 }
 
 button:active {
   background: #ff83b8;
-  transform: scale(0.95);
-}
-
-.animal-button {
-  min-width: 115px;
 }
 
 #message {
@@ -71,7 +60,6 @@ button:active {
 }
 
 .bubble {
-  display: inline-block;
   font-size: 35px;
   animation: float 2s infinite alternate;
 }
@@ -83,7 +71,6 @@ button:active {
 
 footer {
   padding: 20px;
-  color: #9b59b6;
 }
 </style>
 </head>
@@ -106,27 +93,10 @@ footer {
 <h2>🐾 Animal Sounds</h2>
 <p>Touch an animal to hear its sound!</p>
 
-<button class="animal-button" onclick="playAnimal('dog')">
-🐶 Dog
-</button>
-
-<button class="animal-button" onclick="playAnimal('cat')">
-🐱 Cat
-</button>
-
-<button class="animal-button" onclick="playAnimal('cow')">
-🐮 Cow
-</button>
-
-<button class="animal-button" onclick="playAnimal('duck')">
-🦆 Duck
-</button>
-
-<button class="animal-button" onclick="playAnimal('frog')">
-🐸 Frog
-</button>
+<div id="animals"></div>
 
 <p id="message">Tap an animal! ❤️</p>
+
 <button onclick="stopSound()">🔇 Stop Sound</button>
 </div>
 
@@ -153,55 +123,92 @@ footer {
 
 <script>
 
-// REAL ANIMAL AUDIO FILES
-
 const animalSounds = {
   dog: {
+    emoji: "🐶",
     name: "Dog",
     sound: "https://sfxmint.com/dl/animal-dog-bark-25.mp3"
   },
-
   cat: {
+    emoji: "🐱",
     name: "Cat",
     sound: "https://sfxmint.com/dl/animal-cat-meow-34.mp3"
   },
-
   cow: {
+    emoji: "🐮",
     name: "Cow",
     sound: "https://sfxmint.com/dl/cow-moo-02.mp3"
   },
-
   duck: {
+    emoji: "🦆",
     name: "Duck",
     sound: "https://sfxmint.com/dl/duck-quack-02.mp3"
   },
-
   frog: {
+    emoji: "🐸",
     name: "Frog",
     sound: "https://sfxmint.com/dl/animal-frog-14.mp3"
+  },
+  monkey: {
+    emoji: "🐵",
+    name: "Monkey",
+    sound: "https://sfxmint.com/dl/monkey-chatter-01.mp3"
+  },
+  lion: {
+    emoji: "🦁",
+    name: "Lion",
+    sound: "https://sfxmint.com/dl/lion-roar-01.mp3"
+  },
+  elephant: {
+    emoji: "🐘",
+    name: "Elephant",
+    sound: "https://sfxmint.com/dl/elephant-trumpet-01.mp3"
+  },
+  chicken: {
+    emoji: "🐔",
+    name: "Chicken",
+    sound: "https://sfxmint.com/dl/hen-cluck-02.mp3"
+  },
+  sheep: {
+    emoji: "🐑",
+    name: "Sheep",
+    sound: "https://sfxmint.com/dl/sheep-bleat-02.mp3"
   }
 };
+
+const animalsContainer = document.getElementById("animals");
+
+Object.keys(animalSounds).forEach(key => {
+  const animal = animalSounds[key];
+
+  const button = document.createElement("button");
+  button.className = "animal-button";
+  button.textContent = animal.emoji + " " + animal.name;
+
+  button.onclick = () => playAnimal(key);
+
+  animalsContainer.appendChild(button);
+});
 
 let currentAudio = null;
 
 function playAnimal(name) {
-
-  if (!animalSounds[name]) return;
+  const animal = animalSounds[name];
 
   if (currentAudio) {
     currentAudio.pause();
     currentAudio.currentTime = 0;
   }
 
-  currentAudio = new Audio(animalSounds[name].sound);
-  currentAudio.volume = 1;
+  currentAudio = new Audio(animal.sound);
+  currentAudio.volume = 0.8;
 
   document.getElementById("message").textContent =
-    "Hello from the " + animalSounds[name].name + "! ❤️";
+    "Hello from the " + animal.name + "! ❤️";
 
   currentAudio.play().catch(() => {
     document.getElementById("message").textContent =
-      "Sound unavailable. Please check your internet connection.";
+      "Sound unavailable. Please try again.";
   });
 }
 
@@ -223,10 +230,7 @@ function popBubbles() {
 function dreamTime() {
   stopSound();
 
-  document.getElementById("message").textContent =
-    "Sweet dreams, little star! 🌙";
-
-  alert("Good night, little star! ⭐");
+  alert("Good night, little star! 🌙");
 }
 
 </script>
