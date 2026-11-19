@@ -3,13 +3,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BabyJoy - Little Fun World</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -25,10 +23,7 @@ header {
   padding: 25px 10px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 30px;
-}
+header h1 { margin: 0; font-size: 32px; }
 
 section {
   background: white;
@@ -38,14 +33,12 @@ section {
   box-shadow: 0 4px 10px #e8c5d8;
 }
 
-h2 {
-  color: #e7549b;
-}
+h2 { color: #e7549b; }
 
 button {
   border: none;
   border-radius: 15px;
-  padding: 13px 17px;
+  padding: 13px 16px;
   margin: 6px;
   font-size: 17px;
   background: #ff83b8;
@@ -53,21 +46,12 @@ button {
   cursor: pointer;
 }
 
-button:active {
-  transform: scale(0.95);
-}
+button:active { transform: scale(.94); }
 
-.animal {
-  background: #a879e8;
-}
-
-.learning {
-  background: #55b9d6;
-}
-
-.stop {
-  background: #777;
-}
+.animal { background: #a879e8; }
+.learning { background: #55b9d6; }
+.gameButton { background: #ff9b45; }
+.stop { background: #777; }
 
 #bubbleArea {
   position: relative;
@@ -83,17 +67,39 @@ button:active {
   bottom: -50px;
   border-radius: 50%;
   background: #ff9ed0;
-  opacity: 0.75;
+  opacity: .75;
   animation: floatUp 4s linear forwards;
 }
 
 @keyframes floatUp {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-250px);
-  }
+  to { transform: translateY(-250px); }
+}
+
+#balloonArea {
+  min-height: 180px;
+  background: #fff0fa;
+  border-radius: 15px;
+  padding: 12px;
+}
+
+.balloon {
+  display: inline-block;
+  font-size: 43px;
+  padding: 5px;
+  margin: 4px;
+  background: transparent;
+  animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+  to { transform: translateY(-7px); }
+}
+
+.gameMessage {
+  font-size: 19px;
+  font-weight: bold;
+  color: #a34b9b;
+  min-height: 28px;
 }
 
 footer {
@@ -108,14 +114,14 @@ footer {
 <body>
 
 <header>
-  <h1>🌹 BabyJoy 🌹</h1>
+  <h1>🌈 BabyJoy 🌈</h1>
   <h2 style="color:white;">Little Fun World</h2>
   <p>Play, learn and have fun!</p>
 </header>
 
 <section>
   <h2>⭐ Welcome, Little Star!</h2>
-  <p>Let's play and learn!</p>
+  <p>Let's play and learn together!</p>
 </section>
 
 <section>
@@ -148,13 +154,11 @@ footer {
 
 <section>
   <h2>🎨 Learn Colours</h2>
-  <p>Discover beautiful colours!</p>
   <div id="colours"></div>
 </section>
 
 <section>
   <h2>🍎 Learn Fruits</h2>
-  <p>Discover yummy fruits!</p>
   <div id="fruits"></div>
 </section>
 
@@ -168,9 +172,38 @@ footer {
 
 <section>
   <h2>🫧 Bubble Fun</h2>
-  <p>Pop and play with the bubbles!</p>
+  <p>Tap to make bubbles!</p>
   <button onclick="makeBubbles()">🫧 Make Bubbles</button>
   <div id="bubbleArea" onclick="makeBubbles()"></div>
+</section>
+
+<section>
+  <h2>🎮 BabyJoy Mini Games</h2>
+  <p>Let's play some fun games!</p>
+</section>
+
+<section>
+  <h2>🎈 Pop the Balloons</h2>
+  <p>Tap the balloons to pop them!</p>
+  <p class="gameMessage" id="balloonScore">Score: 0</p>
+  <div id="balloonArea"></div>
+  <button class="gameButton" onclick="startBalloons()">Start Game</button>
+</section>
+
+<section>
+  <h2>🎨 Match the Colours</h2>
+  <p id="colourQuestion" class="gameMessage">Press Start Game!</p>
+  <div id="colourChoices"></div>
+  <p id="colourScore" class="gameMessage">Score: 0</p>
+  <button class="gameButton" onclick="startColourGame()">Start Game</button>
+</section>
+
+<section>
+  <h2>🔢 Find the Number</h2>
+  <p id="numberQuestion" class="gameMessage">Press Start Game!</p>
+  <div id="numberChoices"></div>
+  <p id="numberScore" class="gameMessage">Score: 0</p>
+  <button class="gameButton" onclick="startNumberGame()">Start Game</button>
 </section>
 
 <section>
@@ -210,19 +243,15 @@ function playAnimal(animal) {
   }
 
   currentAnimal = new Audio(animalSounds[animal]);
-
   currentAnimal.play().catch(() => {
     alert("Sound could not play. Please check your internet connection.");
   });
 }
 
-// SPEAKING FUNCTION
+// SPEECH
 
 function speak(words) {
-  if (!("speechSynthesis" in window)) {
-    alert("Speech is not supported by this browser.");
-    return;
-  }
+  if (!("speechSynthesis" in window)) return;
 
   speechSynthesis.cancel();
 
@@ -241,9 +270,7 @@ for (let i = 1; i <= 10; i++) {
   const button = document.createElement("button");
   button.className = "learning";
   button.textContent = i;
-
   button.onclick = () => speak(String(i));
-
   numbers.appendChild(button);
 }
 
@@ -255,9 +282,7 @@ const alphabet = document.getElementById("alphabet");
   const button = document.createElement("button");
   button.className = "learning";
   button.textContent = letter;
-
   button.onclick = () => speak(letter);
-
   alphabet.appendChild(button);
 });
 
@@ -276,16 +301,12 @@ const colourList = [
   ["🤎 Brown", "Brown"]
 ];
 
-const colours = document.getElementById("colours");
-
 colourList.forEach(item => {
   const button = document.createElement("button");
   button.className = "learning";
   button.textContent = item[0];
-
   button.onclick = () => speak(item[1]);
-
-  colours.appendChild(button);
+  document.getElementById("colours").appendChild(button);
 });
 
 // FRUITS
@@ -303,19 +324,15 @@ const fruitList = [
   ["🍒 Cherry", "Cherry"]
 ];
 
-const fruits = document.getElementById("fruits");
-
 fruitList.forEach(item => {
   const button = document.createElement("button");
   button.className = "learning";
   button.textContent = item[0];
-
   button.onclick = () => speak(item[1]);
-
-  fruits.appendChild(button);
+  document.getElementById("fruits").appendChild(button);
 });
 
-// BABYJOY 3-MINUTE MUSIC CORNER
+// THREE-MINUTE ORIGINAL MUSIC
 
 let musicContext = null;
 let musicTimer = null;
@@ -324,15 +341,14 @@ let musicStopTimer = null;
 function playMusic() {
   stopMusic();
 
-  const AudioContextClass =
-    window.AudioContext || window.webkitAudioContext;
+  const AudioClass = window.AudioContext || window.webkitAudioContext;
 
-  if (!AudioContextClass) {
+  if (!AudioClass) {
     alert("Music is not supported on this browser.");
     return;
   }
 
-  const ctx = new AudioContextClass();
+  const ctx = new AudioClass();
   musicContext = ctx;
 
   const melody = [
@@ -354,12 +370,8 @@ function playMusic() {
     osc.frequency.value = melody[index];
 
     gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(
-      0.10, ctx.currentTime + 0.04
-    );
-    gain.gain.exponentialRampToValueAtTime(
-      0.0001, ctx.currentTime + 0.32
-    );
+    gain.gain.linearRampToValueAtTime(0.10, ctx.currentTime + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.32);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
@@ -368,7 +380,6 @@ function playMusic() {
     osc.stop(ctx.currentTime + 0.34);
 
     index = (index + 1) % melody.length;
-
     musicTimer = setTimeout(note, 380);
   }
 
@@ -405,10 +416,7 @@ function stopMusic() {
   }
 
   const message = document.getElementById("musicMessage");
-
-  if (message) {
-    message.textContent = "Music stopped. 🎵";
-  }
+  if (message) message.textContent = "Music stopped. 🎵";
 }
 
 // BUBBLE FUN
@@ -421,17 +429,168 @@ function makeBubbles() {
     bubble.className = "bubble";
 
     const size = Math.random() * 30 + 15;
-
     bubble.style.width = size + "px";
     bubble.style.height = size + "px";
     bubble.style.left = Math.random() * 90 + "%";
-    bubble.style.animationDuration =
-      (Math.random() * 3 + 2) + "s";
+    bubble.style.animationDuration = (Math.random() * 3 + 2) + "s";
 
     area.appendChild(bubble);
-
     setTimeout(() => bubble.remove(), 5000);
   }
+}
+
+// BALLOON GAME
+
+let balloonPoints = 0;
+
+function startBalloons() {
+  balloonPoints = 0;
+  updateBalloonScore();
+
+  const area = document.getElementById("balloonArea");
+  area.innerHTML = "";
+
+  const balloons = ["🎈", "🎈", "🎈", "🎈", "🎈", "🎈", "🎈", "🎈"];
+
+  balloons.forEach(() => {
+    const button = document.createElement("button");
+    button.className = "balloon";
+    button.textContent = "🎈";
+
+    button.onclick = () => {
+      if (button.disabled) return;
+      button.disabled = true;
+      button.textContent = "✨";
+      balloonPoints++;
+      updateBalloonScore();
+
+      if (balloonPoints === balloons.length) {
+        speak("Amazing! You popped all the balloons!");
+      }
+    };
+
+    area.appendChild(button);
+  });
+}
+
+function updateBalloonScore() {
+  document.getElementById("balloonScore").textContent =
+    "Score: " + balloonPoints;
+}
+
+// COLOUR MATCHING GAME
+
+const gameColours = [
+  {name: "Red", emoji: "🔴"},
+  {name: "Blue", emoji: "🔵"},
+  {name: "Yellow", emoji: "🟡"},
+  {name: "Green", emoji: "🟢"},
+  {name: "Orange", emoji: "🟠"},
+  {name: "Purple", emoji: "🟣"}
+];
+
+let correctColour = null;
+let colourPoints = 0;
+
+function startColourGame() {
+  colourPoints = 0;
+  updateColourScore();
+  nextColourQuestion();
+}
+
+function nextColourQuestion() {
+  correctColour = gameColours[
+    Math.floor(Math.random() * gameColours.length)
+  ];
+
+  document.getElementById("colourQuestion").textContent =
+    "Find " + correctColour.name + "!";
+
+  const choices = [...gameColours]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 4);
+
+  if (!choices.some(c => c.name === correctColour.name)) {
+    choices[0] = correctColour;
+  }
+
+  const area = document.getElementById("colourChoices");
+  area.innerHTML = "";
+
+  choices.forEach(colour => {
+    const button = document.createElement("button");
+    button.className = "gameButton";
+    button.textContent = colour.emoji;
+
+    button.onclick = () => {
+      if (colour.name === correctColour.name) {
+        colourPoints++;
+        updateColourScore();
+        speak("Well done!");
+        nextColourQuestion();
+      } else {
+        speak("Try again!");
+      }
+    };
+
+    area.appendChild(button);
+  });
+}
+
+function updateColourScore() {
+  document.getElementById("colourScore").textContent =
+    "Score: " + colourPoints;
+}
+
+// FIND THE NUMBER GAME
+
+let correctNumber = 1;
+let numberPoints = 0;
+
+function startNumberGame() {
+  numberPoints = 0;
+  updateNumberScore();
+  nextNumberQuestion();
+}
+
+function nextNumberQuestion() {
+  correctNumber = Math.floor(Math.random() * 10) + 1;
+
+  document.getElementById("numberQuestion").textContent =
+    "Find number " + correctNumber + "!";
+
+  const choices = new Set([correctNumber]);
+
+  while (choices.size < 4) {
+    choices.add(Math.floor(Math.random() * 10) + 1);
+  }
+
+  const area = document.getElementById("numberChoices");
+  area.innerHTML = "";
+
+  [...choices].sort(() => Math.random() - 0.5).forEach(number => {
+    const button = document.createElement("button");
+    button.className = "gameButton";
+    button.textContent = number;
+
+    button.onclick = () => {
+      if (number === correctNumber) {
+        numberPoints++;
+        updateNumberScore();
+        speak("Excellent! You found it!");
+        nextNumberQuestion();
+      } else {
+        speak("Try again!");
+      }
+    };
+
+    area.appendChild(button);
+  });
+}
+
+function updateNumberScore() {
+  document.getElementById("numberScore").textContent =
+    "Score: " + numberPoints;
 }
 
 // SWEET DREAMS
