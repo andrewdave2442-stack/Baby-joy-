@@ -1,11 +1,16 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BabyJoy - Little Fun World</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   text-align: center;
@@ -15,78 +20,137 @@ body {
 }
 
 header {
-  background: #ff83b8;
+  background: linear-gradient(135deg, #ff83b8, #b58af5);
   color: white;
-  padding: 25px 10px;
-  border-radius: 0 0 25px 25px;
+  padding: 22px 10px;
+  font-size: 29px;
+  font-weight: bold;
 }
 
-header h1 {
-  font-size: 30px;
-  margin: 5px;
-}
-
-header p {
+header small {
   font-size: 15px;
 }
 
 nav {
+  background: white;
+  padding: 10px 5px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  padding: 12px;
+  flex-wrap: wrap;
+  gap: 6px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px #ddd;
+}
+
+button {
+  background: #8b72ee;
+  color: white;
+  border: none;
+  padding: 13px 17px;
+  margin: 5px;
+  border-radius: 15px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(.94);
 }
 
 nav button {
-  background: #ffb6d5;
-  border: none;
-  padding: 12px;
-  border-radius: 15px;
   font-size: 14px;
-  color: #663399;
-}
-
-section {
-  display: none;
-  padding: 20px;
-}
-
-section.active {
-  display: block;
+  padding: 11px;
 }
 
 .card {
   background: white;
-  margin: 12px auto;
-  padding: 20px;
+  margin: 15px;
+  padding: 22px 12px;
+  border-radius: 22px;
+  box-shadow: 0 3px 10px #ead6e8;
+}
+
+h2 {
+  color: #a052b5;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+.big-emoji {
+  font-size: 85px;
+  margin: 15px;
+}
+
+.animal-btn {
+  font-size: 18px;
+  min-width: 115px;
+}
+
+#animalDisplay {
+  font-size: 90px;
+  min-height: 115px;
+}
+
+#message {
+  font-size: 19px;
+  color: #a052b5;
+}
+
+#bubbleArea {
+  background: #e4f7ff;
   border-radius: 20px;
-  max-width: 350px;
-  box-shadow: 0 3px 8px #e6b4d0;
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+  margin: 12px;
 }
 
-.big {
-  font-size: 55px;
-}
-
-button {
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid white;
+  background: radial-gradient(circle at 30% 25%,
+    white, #91e7ff, #ba9bff);
+  box-shadow: 0 3px 12px #9bcde9;
   cursor: pointer;
+  animation: floatUp 4s linear forwards;
 }
 
-.action {
-  background: #ff83b8;
-  border: none;
-  border-radius: 15px;
-  padding: 12px 20px;
-  color: white;
-  font-size: 16px;
+@keyframes floatUp {
+  from { transform: translateY(340px); }
+  to { transform: translateY(-100px); }
+}
+
+#score {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#learnDisplay {
+  font-size: 65px;
+  padding: 20px;
+}
+
+input[type=range] {
+  width: 80%;
+  accent-color: #8b72ee;
 }
 
 footer {
-  background: #ff83b8;
-  color: white;
-  padding: 20px;
-  margin-top: 30px;
+  padding: 25px;
+  color: #a052b5;
+}
+
+.hidden {
+  display: none;
 }
 </style>
 </head>
@@ -94,319 +158,557 @@ footer {
 <body>
 
 <header>
-<h1>🌈 BabyJoy 🌈</h1>
-<p>Little Fun World</p>
-<p>Play • Learn • Discover • Dream</p>
+🌈 BabyJoy 🌈
+<br><small>Little Fun World</small>
 </header>
 
 <nav>
-<button onclick="showPage('home')">🏠 Home</button>
-<button onclick="showPage('games')">🎮 Games</button>
-<button onclick="showPage('learning')">📚 Learning</button>
-<button onclick="showPage('music')">🎵 Music</button>
-<button onclick="showPage('animals')">🐻 Animals</button>
+<button onclick="showSection('home')">🏠 Home</button>
+<button onclick="showSection('animals')">🐾 Animals</button>
+<button onclick="showSection('games')">🎮 Games</button>
+<button onclick="showSection('music')">🎵 Music</button>
+<button onclick="showSection('learning')">📚 Learning</button>
+<button onclick="showSection('sleep')">🌙 Sleep</button>
 </nav>
 
-<section id="home" class="active">
-<h2>Welcome to BabyJoy! 💖</h2>
-<div class="card">
-<div class="big">🧸🌈🎈</div>
-<h2>Hello Little Explorer!</h2>
-<p>A magical world full of fun, music and learning.</p>
-</div>
-</section>
+<!-- HOME -->
+<div id="home" class="section active">
 
-<section id="games">
-<h2>🎮 Game World</h2>
 <div class="card">
-<div class="big">🎈</div>
-<h3>Balloon Fun</h3>
-<p>Get ready for exciting games!</p>
+<h2>⭐ Welcome, Little Star!</h2>
+<div class="big-emoji">🧸🌈</div>
+<p>Welcome to BabyJoy!</p>
+<p>Let's play, discover, listen and learn!</p>
 </div>
-</section>
 
-<section id="learning">
-<h2>📚 Learning World</h2>
 <div class="card">
-<div class="big">🔤</div>
-<h3>Learn and Discover</h3>
-<p>Letters, numbers, colours and shapes!</p>
+<h2>What would you like to do?</h2>
+<button onclick="showSection('animals')">🐾 Animal World</button>
+<button onclick="showSection('games')">🫧 Bubble Game</button>
+<button onclick="showSection('music')">🎵 Music World</button>
+<button onclick="showSection('learning')">📚 Learning</button>
+<button onclick="showSection('sleep')">🌙 Sweet Dreams</button>
 </div>
-</section>
 
-<section id="music">
+</div>
+
+<!-- ANIMALS -->
+<div id="animals" class="section">
+
+<div class="card">
+<h2>🐾 Animal World</h2>
+<p>Touch an animal to see it and hear its sound!</p>
+
+<div id="animalDisplay">🐶</div>
+<p id="message">Choose your favourite animal!</p>
+
+<div>
+<button class="animal-btn" onclick="animal('dog')">🐶 Dog</button>
+<button class="animal-btn" onclick="animal('cat')">🐱 Cat</button>
+<button class="animal-btn" onclick="animal('cow')">🐮 Cow</button>
+<button class="animal-btn" onclick="animal('duck')">🦆 Duck</button>
+<button class="animal-btn" onclick="animal('lion')">🦁 Lion</button>
+<button class="animal-btn" onclick="animal('sheep')">🐑 Sheep</button>
+<button class="animal-btn" onclick="animal('frog')">🐸 Frog</button>
+<button class="animal-btn" onclick="animal('monkey')">🐵 Monkey</button>
+<button class="animal-btn" onclick="animal('elephant')">🐘 Elephant</button>
+</div>
+</div>
+
+</div>
+
+<!-- GAMES -->
+<div id="games" class="section">
+
+<div class="card">
+<h2>🫧 Bubble Pop Challenge!</h2>
+<p>Pop as many bubbles as you can before time runs out!</p>
+
+<p id="score">⭐ Score: 0</p>
+<p id="timer">⏰ Time: 30</p>
+
+<button onclick="startGame()">▶ Start Game</button>
+<button onclick="stopGame()">⏹ Stop</button>
+
+<div id="bubbleArea"></div>
+<p id="gameMessage">Ready to play?</p>
+</div>
+
+</div>
+
+<!-- MUSIC -->
+<div id="music" class="section">
+
+<div class="card">
 <h2>🎵 Music World</h2>
-<div class="card">
-<div class="big">🎶</div>
-<h3>Little Music Corner</h3>
-<p>Enjoy fun sounds and melodies!</p>
-</div>
-</section>
+<div class="big-emoji">🎹🎶</div>
+<p>Let's make some beautiful music!</p>
 
-<section id="animals">
-<h2>🐻 Animal World</h2>
-<div class="card">
-<div class="big">🐶🐱🐮</div>
-<h3>Meet the Animals!</h3>
-<p>Discover wonderful animals and their sounds.</p>
-</div>
-</section>
-
-<!-- PART 2: BABYJOY ACTIVITIES -->
-
-<div class="card">
-<h2>🎈 Balloon Pop Game</h2>
-<p id="balloonScore">Score: 0</p>
-<div class="big" id="balloon">🎈</div>
-<button class="action" onclick="popBalloon()">POP!</button>
+<button onclick="playNote(262)">🎵 Do</button>
+<button onclick="playNote(294)">🎵 Re</button>
+<button onclick="playNote(330)">🎵 Mi</button>
+<button onclick="playNote(349)">🎵 Fa</button>
+<button onclick="playNote(392)">🎵 Sol</button>
+<button onclick="playNote(440)">🎵 La</button>
+<button onclick="playNote(494)">🎵 Ti</button>
+<button onclick="playNote(523)">🎵 Do</button>
 </div>
 
 <div class="card">
-<h2>🔤 Alphabet Fun</h2>
-<div class="big" id="letter">A</div>
-<button class="action" onclick="nextLetter()">Next Letter</button>
+<h2>🎼 Little Melody</h2>
+<p>Listen to a cheerful original melody!</p>
+<button onclick="playMelody()">▶ Play Melody</button>
+<button onclick="stopMusic()">⏹ Stop Music</button>
 </div>
 
-<div class="card">
-<h2>🔢 Count with BabyJoy</h2>
-<div class="big" id="number">1</div>
-<button class="action" onclick="nextNumber()">Next Number</button>
 </div>
 
+<!-- LEARNING -->
+<div id="learning" class="section">
+
 <div class="card">
-<h2>🎨 Colour Fun</h2>
-<div class="big" id="colour">❤️</div>
-<button class="action" onclick="nextColour()">Next Colour</button>
+<h2>📚 Little Learners</h2>
+<p>Let's discover letters, numbers and colours!</p>
+
+<div id="learnDisplay">🌈</div>
+<p id="learnMessage">Choose something to learn!</p>
+
+<h3>🔤 Alphabet</h3>
+<button onclick="learnLetters()">Show Letter</button>
+
+<h3>🔢 Numbers</h3>
+<button onclick="learnNumbers()">Show Number</button>
+
+<h3>🎨 Colours</h3>
+<button onclick="learnColors()">Show Colour</button>
 </div>
 
-<div class="card">
-<h2>🐾 Animal Sounds</h2>
-<div class="big" id="animalPicture">🐶</div>
-<h3 id="animalName">Dog</h3>
-<button class="action" onclick="nextAnimal()">Next Animal</button>
-<button class="action" onclick="animalSound()">🔊 Hear Sound</button>
 </div>
 
-<script>
-let score = 0;
-
-function popBalloon() {
-  score++;
-  document.getElementById("balloonScore").innerText =
-    "Score: " + score;
-
-  document.getElementById("balloon").innerText =
-    ["🎈","🎉","💖","🌟"][Math.floor(Math.random()*4)];
-}
-
-let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-let letterIndex = 0;
-
-function nextLetter() {
-  letterIndex = (letterIndex + 1) % letters.length;
-  document.getElementById("letter").innerText =
-    letters[letterIndex];
-}
-
-let numberIndex = 1;
-
-function nextNumber() {
-  numberIndex++;
-  if(numberIndex > 20) numberIndex = 1;
-  document.getElementById("number").innerText =
-    numberIndex;
-}
-
-let colours = ["❤️","💙","💚","💛","💜","🧡","🤍"];
-let colourIndex = 0;
-
-function nextColour() {
-  colourIndex = (colourIndex + 1) % colours.length;
-  document.getElementById("colour").innerText =
-    colours[colourIndex];
-}
-
-let animals = [
-  ["🐶","Dog","Woof woof!"],
-  ["🐱","Cat","Meow meow!"],
-  ["🐮","Cow","Moo moo!"],
-  ["🐸","Frog","Ribbit ribbit!"],
-  ["🦁","Lion","Roar!"],
-  ["🐑","Sheep","Baa baa!"],
-  ["🐤","Bird","Tweet tweet!"],
-  ["🐘","Elephant","Trumpet!"],
-  ["🐵","Monkey","Ooh ooh!"]
-];
-
-let animalIndex = 0;
-
-function nextAnimal() {
-  animalIndex = (animalIndex + 1) % animals.length;
-  showAnimal();
-}
-
-function showAnimal() {
-  document.getElementById("animalPicture").innerText =
-    animals[animalIndex][0];
-
-  document.getElementById("animalName").innerText =
-    animals[animalIndex][1];
-}
-
-function animalSound() {
-  if ("speechSynthesis" in window) {
-    speechSynthesis.cancel();
-    let speech = new SpeechSynthesisUtterance(
-      animals[animalIndex][2]
-    );
-    speech.rate = 0.8;
-    speechSynthesis.speak(speech);
-  }
-}
-</script>
-
-<!-- PART 3: MUSIC, SLEEP AND FINAL SETTINGS -->
-
-<section id="music">
-<h2>🎵 BabyJoy Music Corner</h2>
+<!-- SLEEP -->
+<div id="sleep" class="section">
 
 <div class="card">
-<div class="big">🎶🎹🎼</div>
-<h3>Happy Music</h3>
-<p>Enjoy your happy music corner!</p>
-<button class="action" onclick="playHappyMusic()">
-▶ Play Music
-</button>
-<button class="action" onclick="stopMusic()">
-⏹ Stop Music
-</button>
+<h2>🌙 Sweet Dreams</h2>
+<div class="big-emoji">🌙⭐🧸</div>
+<p>It's time to relax, little star.</p>
+<p>Enjoy a gentle original lullaby.</p>
+
+<button onclick="playLullaby()">🌙 Play Lullaby</button>
+<button onclick="stopMusic()">⏹ Stop Lullaby</button>
+<p id="sleepMessage">Sweet dreams! ❤️</p>
 </div>
 
-<div class="card">
-<h2>🌙 Sleep Time</h2>
-<div class="big">🌙⭐💤</div>
-<p>Time to relax, little explorer.</p>
-<button class="action" onclick="playLullaby()">
-🌙 Play Lullaby
-</button>
-<button class="action" onclick="stopMusic()">
-⏹ Stop
-</button>
 </div>
 
+<!-- SOUND SETTINGS -->
 <div class="card">
-<h3>🔊 Volume Control</h3>
-<input
-type="range"
-id="volume"
-min="0"
-max="1"
-step="0.1"
-value="0.7"
-oninput="changeVolume(this.value)"
->
+<h2>🔊 Sound Settings</h2>
+<p>Adjust the sound volume</p>
+<input type="range" min="0" max="100" value="70"
+oninput="setVolume(this.value)">
 <p id="volumeText">Volume: 70%</p>
+<button onclick="stopMusic()">🔇 Stop Sound</button>
 </div>
-</section>
 
 <footer>
 🌈 BabyJoy – Little Fun World 🌈
 <p>Play • Learn • Discover • Dream</p>
-<p>Made with 💖 for little explorers</p>
 </footer>
 
 <script>
-let musicContext = null;
-let musicOscillators = [];
-let musicTimer = null;
-let currentVolume = 0.7;
 
-function stopMusic() {
-  if (musicTimer) {
-    clearInterval(musicTimer);
-    musicTimer = null;
-  }
+// NAVIGATION
 
-  musicOscillators.forEach(function(osc) {
-    try { osc.stop(); } catch(e) {}
+function showSection(section) {
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.remove('active');
   });
 
-  musicOscillators = [];
+  document.getElementById(section).classList.add('active');
+
+  if (section !== 'games') stopGame();
 }
 
-function playTone(frequency, duration) {
-  try {
-    if (!musicContext) {
-      musicContext = new (
-        window.AudioContext ||
-        window.webkitAudioContext
-      )();
-    }
+// SOUND ENGINE
 
-    musicContext.resume();
+let audioContext;
+let masterGain;
+let volumeLevel = 0.7;
+let activeNodes = [];
+let musicTimers = [];
+let musicPlaying = false;
 
-    let osc = musicContext.createOscillator();
-    let gain = musicContext.createGain();
+function getAudio() {
+  if (!audioContext || audioContext.state === "closed") {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioContext.createGain();
+    masterGain.gain.value = volumeLevel;
+    masterGain.connect(audioContext.destination);
+  }
 
-    osc.type = "sine";
-    osc.frequency.value = frequency;
-    gain.gain.value = currentVolume * 0.08;
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
 
-    osc.connect(gain);
-    gain.connect(musicContext.destination);
-
-    osc.start();
-    osc.stop(musicContext.currentTime + duration);
-
-    musicOscillators.push(osc);
-  } catch(e) {}
+  return audioContext;
 }
 
-function playHappyMusic() {
+function setVolume(value) {
+  volumeLevel = value / 100;
+
+  if (masterGain) {
+    masterGain.gain.setTargetAtTime(
+      volumeLevel, audioContext.currentTime, 0.05
+    );
+  }
+
+  document.getElementById("volumeText").textContent =
+    "Volume: " + value + "%";
+}
+
+function playTone(frequency, duration = 0.25, type = "sine") {
+  const ctx = getAudio();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = type;
+  osc.frequency.value = frequency;
+
+  gain.gain.setValueAtTime(0.001, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.8, ctx.currentTime + 0.03);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001, ctx.currentTime + duration
+  );
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+
+  osc.start();
+  osc.stop(ctx.currentTime + duration + 0.02);
+
+  activeNodes.push(osc);
+
+  osc.onended = () => {
+    activeNodes = activeNodes.filter(n => n !== osc);
+  };
+}
+
+function playNote(freq) {
+  stopMusic();
+  playTone(freq, 0.5);
+}
+
+// ANIMAL SOUNDS
+
+const animalData = {
+  dog: {
+    emoji: "🐶",
+    message: "Woof! Woof! I'm a dog!",
+    notes: [300, 220, 300, 220],
+    type: "triangle"
+  },
+  cat: {
+    emoji: "🐱",
+    message: "Meow! Meow! I'm a cat!",
+    notes: [650, 520, 600],
+    type: "sine"
+  },
+  cow: {
+    emoji: "🐮",
+    message: "Moooo! I'm a cow!",
+    notes: [160, 140, 120],
+    type: "sawtooth"
+  },
+  duck: {
+    emoji: "🦆",
+    message: "Quack! Quack! I'm a duck!",
+    notes: [500, 350, 500, 350],
+    type: "square"
+  },
+  lion: {
+    emoji: "🦁",
+    message: "Roar! I'm a lion!",
+    notes: [130, 100, 150],
+    type: "sawtooth"
+  },
+  sheep: {
+    emoji: "🐑",
+    message: "Baaa! Baaa! I'm a sheep!",
+    notes: [350, 300, 350],
+    type: "triangle"
+  },
+  frog: {
+    emoji: "🐸",
+    message: "Ribbit! Ribbit! I'm a frog!",
+    notes: [250, 350, 250],
+    type: "square"
+  },
+  monkey: {
+    emoji: "🐵",
+    message: "Ooh! Ooh! I'm a monkey!",
+    notes: [450, 600, 450],
+    type: "triangle"
+  },
+  elephant: {
+    emoji: "🐘",
+    message: "Trumpet! I'm an elephant!",
+    notes: [180, 350, 180],
+    type: "sawtooth"
+  }
+};
+
+function animal(name) {
   stopMusic();
 
-  let notes = [262,294,330,349,392,349,330,294];
-  let i = 0;
+  const data = animalData[name];
 
-  musicTimer = setInterval(function() {
-    playTone(notes[i], 0.35);
-    i = (i + 1) % notes.length;
-  }, 450);
+  document.getElementById("animalDisplay").textContent = data.emoji;
+  document.getElementById("message").textContent = data.message;
+
+  const ctx = getAudio();
+
+  data.notes.forEach((freq, i) => {
+    const start = ctx.currentTime + i * 0.22;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = data.type;
+    osc.frequency.value = freq;
+
+    gain.gain.setValueAtTime(0.001, start);
+    gain.gain.linearRampToValueAtTime(0.65, start + 0.04);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001, start + 0.19
+    );
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+
+    osc.start(start);
+    osc.stop(start + 0.21);
+    activeNodes.push(osc);
+  });
 }
+
+// BUBBLE GAME
+
+let gameScore = 0;
+let gameTime = 30;
+let gameInterval;
+let bubbleInterval;
+let gameRunning = false;
+
+function startGame() {
+  stopGame();
+
+  gameRunning = true;
+  gameScore = 0;
+  gameTime = 30;
+
+  document.getElementById("score").textContent = "⭐ Score: 0";
+  document.getElementById("timer").textContent = "⏰ Time: 30";
+  document.getElementById("gameMessage").textContent =
+    "Pop the bubbles! 🎉";
+
+  const area = document.getElementById("bubbleArea");
+  area.innerHTML = "";
+
+  bubbleInterval = setInterval(createBubble, 650);
+
+  gameInterval = setInterval(() => {
+    gameTime--;
+
+    document.getElementById("timer").textContent =
+      "⏰ Time: " + gameTime;
+
+    if (gameTime <= 0) {
+      stopGame();
+      document.getElementById("gameMessage").textContent =
+        "🎉 Amazing! Your score is " + gameScore + "!";
+    }
+  }, 1000);
+}
+
+function createBubble() {
+  if (!gameRunning) return;
+
+  const area = document.getElementById("bubbleArea");
+  const bubble = document.createElement("div");
+
+  const size = 35 + Math.random() * 45;
+
+  bubble.className = "bubble";
+  bubble.style.width = size + "px";
+  bubble.style.height = size + "px";
+  bubble.style.left = Math.random() *
+    Math.max(0, area.clientWidth - size) + "px";
+  bubble.style.bottom = "-60px";
+
+  bubble.onclick = function() {
+    if (!gameRunning) return;
+
+    gameScore++;
+    document.getElementById("score").textContent =
+      "⭐ Score: " + gameScore;
+
+    playTone(500 + Math.random() * 400, 0.12);
+    bubble.remove();
+  };
+
+  area.appendChild(bubble);
+
+  setTimeout(() => {
+    bubble.remove();
+  }, 4000);
+}
+
+function stopGame() {
+  gameRunning = false;
+  clearInterval(gameInterval);
+  clearInterval(bubbleInterval);
+}
+
+// LEARNING
+
+let letterIndex = 0;
+let numberIndex = 1;
+let colorIndex = 0;
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const colors = [
+  ["🔴", "Red"],
+  ["🔵", "Blue"],
+  ["🟡", "Yellow"],
+  ["🟢", "Green"],
+  ["🟣", "Purple"],
+  ["🟠", "Orange"]
+];
+
+function learnLetters() {
+  const letter = letters[letterIndex];
+
+  document.getElementById("learnDisplay").textContent = letter;
+  document.getElementById("learnMessage").textContent =
+    "Letter " + letter;
+
+  letterIndex = (letterIndex + 1) % letters.length;
+  playTone(400, 0.2);
+}
+
+function learnNumbers() {
+  document.getElementById("learnDisplay").textContent =
+    numberIndex;
+
+  document.getElementById("learnMessage").textContent =
+    "Number " + numberIndex;
+
+  numberIndex = numberIndex >= 10 ? 1 : numberIndex + 1;
+  playTone(500, 0.2);
+}
+
+function learnColors() {
+  const color = colors[colorIndex];
+
+  document.getElementById("learnDisplay").textContent = color[0];
+  document.getElementById("learnMessage").textContent =
+    "This is " + color[1] + "!";
+
+  colorIndex = (colorIndex + 1) % colors.length;
+  playTone(600, 0.2);
+}
+
+// MUSIC
+
+const melody = [
+  262, 330, 392, 330,
+  294, 349, 440, 349,
+  330, 392, 523, 392,
+  349, 440, 523, 440
+];
+
+function scheduleMelody(notes, duration, interval) {
+  stopMusic();
+
+  musicPlaying = true;
+
+  let index = 0;
+
+  function nextNote() {
+    if (!musicPlaying) return;
+
+    if (index >= notes.length) {
+      stopMusic();
+      return;
+    }
+
+    playTone(notes[index], duration);
+    index++;
+
+    const timer = setTimeout(nextNote, interval);
+    musicTimers.push(timer);
+  }
+
+  nextNote();
+}
+
+function playMelody() {
+  scheduleMelody(melody, 0.35, 400);
+}
+
+// ORIGINAL GENTLE LULLABY
+
+const lullaby = [
+  392, 349, 330, 294,
+  330, 294, 262, 294,
+  330, 349, 392, 330,
+  294, 262, 294, 262
+];
 
 function playLullaby() {
   stopMusic();
 
-  let notes = [392,349,330,294,262,294,330,262];
-  let i = 0;
+  document.getElementById("sleepMessage").textContent =
+    "🌙 Enjoy your gentle lullaby... Sweet dreams!";
 
-  musicTimer = setInterval(function() {
-    playTone(notes[i], 1.1);
-    i = (i + 1) % notes.length;
-  }, 1300);
-}
+  musicPlaying = true;
 
-function changeVolume(value) {
-  currentVolume = Number(value);
+  let index = 0;
+  const endTime = Date.now() + 180000;
 
-  document.getElementById("volumeText").innerText =
-    "Volume: " + Math.round(currentVolume * 100) + "%";
-}
+  function nextLullabyNote() {
+    if (!musicPlaying || Date.now() >= endTime) {
+      stopMusic();
+      return;
+    }
 
-function showPage(page) {
-  document.querySelectorAll("section").forEach(function(section) {
-    section.classList.remove("active");
-  });
+    playTone(lullaby[index], 0.85);
+    index = (index + 1) % lullaby.length;
 
-  let selected = document.getElementById(page);
-
-  if (selected) {
-    selected.classList.add("active");
+    const timer = setTimeout(nextLullabyNote, 1100);
+    musicTimers.push(timer);
   }
 
-  stopMusic();
-  window.scrollTo(0,0);
+  nextLullabyNote();
 }
+
+// STOP ALL MUSIC AND SOUNDS
+
+function stopMusic() {
+  musicPlaying = false;
+
+  musicTimers.forEach(timer => clearTimeout(timer));
+  musicTimers = [];
+
+  activeNodes.forEach(node => {
+    try {
+      node.stop();
+    } catch(e) {}
+  });
+
+  activeNodes = [];
+}
+
 </script>
 
 </body>
