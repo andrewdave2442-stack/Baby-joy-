@@ -1,0 +1,19 @@
+
+{
+  "name": "BabyJoy - Little Fun World",
+  "short_name": "BabyJoy",
+  "description": "A colourful world of learning, music, animals and games.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff0f7",
+  "theme_color": "#ff83b8",
+  "icons": [
+    {
+      "src": "./File00000000",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}
